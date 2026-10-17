@@ -141,6 +141,14 @@ textarea.in{min-height:84px;resize:vertical;line-height:1.45}
 .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:10px 16px;border-radius:8px;font-size:14px;opacity:0;transition:.2s;pointer-events:none;z-index:9}
 .toast.on{opacity:1;transform:translateX(-50%)}
 dialog{border:1px solid var(--line);border-radius:12px;padding:0;width:min(520px,calc(100% - 32px))}
+.sync{display:inline-flex;align-items:center;gap:7px}
+.sync::before{content:"";width:8px;height:8px;border-radius:50%;background:#8a8f96}
+.sync[data-s="ok"]::before{background:#3fb760}
+.sync[data-s="busy"]::before{background:#e0b341}
+.sync[data-s="err"]::before{background:#e0683f}
+.by{color:var(--ink-3);font-weight:600}
+.serr{color:#a3261b;font-size:13.5px;margin:-4px 0 10px;min-height:1em}
+.lead{color:var(--ink-2);font-size:14px;margin:-6px 0 14px;line-height:1.5}
 dialog::backdrop{background:rgba(15,17,20,.38)}
 dialog form{padding:20px 22px}
 dialog h2{font-size:18px;margin-bottom:14px}
@@ -236,6 +244,7 @@ dialog .acts{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}
   <div class="wrap">
     <div class="brand">LocalLift Leads<span id="sub"></span></div>
     <div class="acts">
+      <button class="tbtn sync" id="sync" data-s="off">Not shared</button>
       <a class="tbtn" href="https://locallift-call-script.vercel.app" target="_blank" rel="noopener">Call script</a>
       <button class="tbtn" id="bAdd">+ Add lead</button>
       <button class="tbtn" id="bCsv">Export CSV</button>
@@ -292,6 +301,18 @@ dialog .acts{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}
     <div class="acts"><button class="btn ghost" value="cancel" formnovalidate>Cancel</button><button class="btn" value="ok">Add lead</button></div>
   </form>
 </dialog>
+<dialog id="dlgSync">
+  <form method="dialog" id="fSync">
+    <h2>Share with your team</h2>
+    <p class="lead">Enter the team passcode once on each laptop. After that, everyone sees the same leads, statuses, notes and deals, updated every few seconds.</p>
+    <div class="grid2">
+      <label class="f"><span>Your name</span><input class="in" name="me" required placeholder="So the team sees who called" autocomplete="name"></label>
+      <label class="f"><span>Team passcode</span><input class="in" name="pass" type="password" required autocomplete="current-password"></label>
+    </div>
+    <p class="serr" id="serr" role="alert"></p>
+    <div class="acts"><button class="btn ghost" value="cancel" formnovalidate>Not now</button><button class="btn ghost hide" value="off" id="bOff" formnovalidate>Stop sharing on this laptop</button><button class="btn" value="ok">Connect</button></div>
+  </form>
+</dialog>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
@@ -331,15 +352,16 @@ function load() {
   try { const d = JSON.parse(localStorage.getItem(KEY)); if (d && d.state) return d; } catch (e) {}
   return { state: {}, custom: [] };
 }
-function save() {
+function save(remote) {
   try { localStorage.setItem(KEY, JSON.stringify(db)); } catch (e) { toast("Couldn't save in this browser. Use Backup to keep a copy."); }
+  if (!remote) soon();
 }
 const leads = () => SEED.concat(db.custom || []);
 const st = id => (db.state[id] ||= { status: "new", log: [] });
 const peek = id => db.state[id] || { status: "new", log: [] };
 function touch(id, fields, logText) {
   const s = st(id); Object.assign(s, fields); s.updated = stamp();
-  if (logText) s.log.unshift({ t: s.updated, m: logText });
+  if (logText) s.log.unshift(sync.me ? { t: s.updated, m: logText, by: sync.me } : { t: s.updated, m: logText });
   save();
 }
 
@@ -469,7 +491,7 @@ function renderDrawer() {
     <div class="sec"><h3>What happened on the call?</h3>
       <div class="outbox" style="margin-bottom:12px">${outcomeBtns(l.id)}</div>
       <div class="addlog"><input class="in" id="logIn" placeholder="Add a note to the history (Enter to add)"><button class="btn ghost" data-id="${l.id}" data-act="addlog">Add</button></div>
-      <ul class="log">${(s.log || []).map(e => `<li><time>${esc(fmtTime(e.t))}</time><span>${esc(e.m)}</span></li>`).join("") || `<li><time></time><span class="hint">No activity yet.</span></li>`}</ul>
+      <ul class="log">${(s.log || []).map(e => `<li><time>${esc(fmtTime(e.t))}</time><span>${e.by ? `<span class="by">${esc(e.by)}:</span> ` : ""}${esc(e.m)}</span></li>`).join("") || `<li><time></time><span class="hint">No activity yet.</span></li>`}</ul>
     </div>
     <div class="sec${isDeal ? "" : " hide"}" id="dealSec"><h3>Deal</h3>
       <div class="pkgs">${Object.entries(PKGS).map(([k, p]) => `<button class="pkg" data-id="${l.id}" data-pkg="${k}" aria-pressed="${s.pkg === k}"><b>${p.name}</b>${p.price ? inr(p.price) : "Your price"}</button>`).join("")}</div>
@@ -667,7 +689,7 @@ function renderNext() {
     <div class="nx-k">Next call · ${q.length} in the queue <span class="why ${why[1]}">${why[0]}</span></div>
     <h2 data-open="${l.id}" title="Open details">${esc(l.name)}</h2>
     <div class="meta">${esc(l.cat)} · ${esc(l.area || "Gurugram")}${l.rating ? ` · <span class="star">★</span> ${esc(l.rating)} (${esc(l.reviews)} reviews)` : ""} · ask for <b style="color:var(--ink)">${esc(s.contact || l.contact || "the owner")}</b></div>
-    ${(s.log || [])[0] ? `<div class="nx-note"><b>Last time:</b> ${esc(s.log[0].m)} (${esc(fmtTime(s.log[0].t))})</div>` : l.note ? `<div class="nx-note">${esc(l.note)}</div>` : ""}
+    ${(s.log || [])[0] ? `<div class="nx-note"><b>Last time:</b> ${s.log[0].by ? esc(s.log[0].by) + ": " : ""}${esc(s.log[0].m)} (${esc(fmtTime(s.log[0].t))})</div>` : l.note ? `<div class="nx-note">${esc(l.note)}</div>` : ""}
     <div class="nx-acts">
       <a class="big call" href="tel:+${d}">${icon("call")}Call ${esc(fmtPhone(l.phone))}</a>
       <a class="big wa" href="${waLink(l)}" target="_blank" rel="noopener">${icon("wa")}WhatsApp demo</a>
@@ -708,6 +730,108 @@ if (!seen()) $("#guide").classList.remove("hide");
 $("#gotIt").onclick = () => { $("#guide").classList.add("hide"); try { localStorage.setItem(HINT, "1"); } catch (e) {} };
 $("#showGuide").onclick = () => { $("#guide").classList.remove("hide"); window.scrollTo({ top: 0, behavior: "smooth" }); };
 
+/* ---- Team sync: every lead's state is one row in Supabase, read and written through two passcode-checked functions.
+   localStorage stays the offline copy; edits made offline are pushed when the connection comes back. ---- */
+const SUPA = { url: /*SUPA_URL*/"", key: /*SUPA_KEY*/"" };
+const SK = { pass: "locallift-crm:team-pass", me: "locallift-crm:me", meta: "locallift-crm:sync" };
+const lsGet = k => { try { return localStorage.getItem(k) || ""; } catch (e) { return ""; } };
+const lsSet = (k, v) => { try { v ? localStorage.setItem(k, v) : localStorage.removeItem(k); } catch (e) {} };
+const sync = { pass: lsGet(SK.pass), me: lsGet(SK.me), since: null, base: {}, busy: false, again: false, timer: 0, dirty: false };
+try { const m = JSON.parse(lsGet(SK.meta)); if (m && m.base) { sync.since = m.since; sync.base = m.base; } } catch (e) {}
+const keepMeta = () => lsSet(SK.meta, JSON.stringify({ since: sync.since, base: sync.base }));
+// "s:<id>" = status, notes and deal for a lead; "c:<id>" = a lead someone added by hand
+function items() {
+  const m = {};
+  for (const [id, v] of Object.entries(db.state)) m["s:" + id] = JSON.stringify(v);
+  for (const c of db.custom || []) m["c:" + c.id] = JSON.stringify(c);
+  return m;
+}
+function applyItem(k, d) {
+  const id = k.slice(2);
+  if (k[0] === "s") { if (d == null) delete db.state[id]; else db.state[id] = JSON.parse(d); return; }
+  db.custom = (db.custom || []).filter(x => x.id !== id);
+  if (d != null) db.custom.push(JSON.parse(d));
+}
+async function rpc(fn, body) {
+  const r = await fetch(`${SUPA.url}/rest/v1/rpc/${fn}`, { method: "POST", headers: { apikey: SUPA.key, Authorization: `Bearer ${SUPA.key}`, "Content-Type": "application/json" }, body: JSON.stringify(body) });
+  const txt = await r.text();
+  if (!r.ok) throw Object.assign(new Error(txt), { bad: /bad passcode/.test(txt) });
+  return txt ? JSON.parse(txt) : null;
+}
+function setSync(s, msg) { const el = $("#sync"); el.dataset.s = s; el.textContent = msg; }
+const ago = () => "Shared · synced " + new Date().toLocaleTimeString("en-IN", { hour: "numeric", minute: "2-digit" });
+function soon(ms = 400) { if (!sync.pass || !SUPA.url) return; clearTimeout(sync.timer); sync.timer = setTimeout(tick, ms); }
+async function tick() {
+  if (!sync.pass || !SUPA.url) return;
+  if (sync.busy) { sync.again = true; return; }
+  sync.busy = true; setSync("busy", "Syncing…");
+  try {
+    const first = !sync.since;
+    // pull first: rows changed by anyone since the last pull (all rows on the first run)
+    const res = await rpc("crm_pull", { p_pass: sync.pass, p_since: sync.since });
+    const local = items(); let got = 0;
+    for (const r of res.rows || []) {
+      const d = r.del ? null : r.d;
+      if (!first && local[r.k] !== sync.base[r.k]) continue; // edited on this laptop and not pushed yet: ours goes up next
+      if ((local[r.k] ?? null) !== d) { applyItem(r.k, d); got++; }
+      if (d == null) delete sync.base[r.k]; else sync.base[r.k] = d;
+    }
+    sync.since = res.now;
+    if (got) { save(true); sync.dirty = true; }
+    // push whatever this laptop changed (on the first run: leads only this laptop had)
+    const now = items(), out = [];
+    for (const [k, v] of Object.entries(now)) if (v !== sync.base[k]) out.push({ k, d: v, del: false });
+    for (const k of Object.keys(sync.base)) if (!(k in now)) out.push({ k, d: null, del: true });
+    if (out.length) {
+      await rpc("crm_push", { p_pass: sync.pass, p_items: out, p_by: sync.me || null });
+      for (const o of out) { if (o.del) delete sync.base[o.k]; else sync.base[o.k] = o.d; }
+    }
+    keepMeta(); setSync("ok", ago());
+    if (sync.dirty) paint();
+    if (first && got) toast(`Loaded the team's data (${got} updates)`);
+  } catch (e) {
+    if (e.bad) { disconnect(); setSync("err", "Passcode changed"); openSync("That passcode didn't work. Ask the team for the current one."); }
+    else setSync("err", navigator.onLine ? "Can't reach server · saved here" : "Offline · saved here");
+  } finally {
+    sync.busy = false;
+    if (sync.again) { sync.again = false; soon(50); }
+  }
+}
+// don't redraw under someone's cursor: wait until they leave the field
+function paint() {
+  const a = document.activeElement;
+  if (a && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName) && a.id !== "q") return;
+  sync.dirty = false; render();
+}
+document.addEventListener("focusout", () => setTimeout(() => sync.dirty && paint(), 0));
+function disconnect() { sync.pass = ""; sync.since = null; sync.base = {}; lsSet(SK.pass, ""); lsSet(SK.meta, ""); setSync("off", "Not shared"); }
+function openSync(err = "") {
+  const f = $("#fSync"); f.me.value = sync.me; f.pass.value = "";
+  $("#serr").textContent = err; $("#bOff").classList.toggle("hide", !sync.pass);
+  $("#dlgSync").showModal(); (sync.me ? f.pass : f.me).focus();
+}
+$("#sync").onclick = () => openSync();
+$("#fSync").addEventListener("submit", async e => {
+  const v = e.submitter?.value;
+  if (v === "off") { disconnect(); toast("Stopped sharing. Your data stays on this laptop."); return; }
+  if (v !== "ok") return;
+  e.preventDefault();
+  const f = e.target, me = f.me.value.trim(), pass = f.pass.value.trim();
+  if (!me || !pass) return;
+  $("#serr").textContent = "Checking…";
+  try { await rpc("crm_pull", { p_pass: pass, p_since: new Date().toISOString() }); }
+  catch (err) { $("#serr").textContent = err.bad ? "That passcode didn't work." : "Couldn't reach the server. Check the internet and try again."; return; }
+  sync.me = me; lsSet(SK.me, me);
+  if (pass !== sync.pass) { sync.since = null; sync.base = {}; }
+  sync.pass = pass; lsSet(SK.pass, pass);
+  $("#dlgSync").close(); toast(`Connected as ${me}. Syncing with the team.`); soon(0);
+});
+if (!SUPA.url) $("#sync").classList.add("hide");
+else if (sync.pass) { setSync("busy", "Connecting…"); soon(0); }
+else if (lsGet("locallift-crm:sync-asked") !== "1") { lsSet("locallift-crm:sync-asked", "1"); setTimeout(() => openSync(), 400); }
+setInterval(() => { if (document.visibilityState === "visible") soon(0); }, 8000);
+document.addEventListener("visibilitychange", () => document.visibilityState === "visible" && soon(0));
+addEventListener("online", () => soon(0));
 
 render();
 </script>
