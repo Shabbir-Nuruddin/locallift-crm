@@ -1,0 +1,543 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>LocalLift Leads</title>
+<style>
+:root{
+  --bg:#f4f4f2;--panel:#ffffff;--ink:#16181b;--ink-2:#4a4f57;--ink-3:#686d75;--line:#e3e3df;--line-2:#d2d2cc;
+  --accent:#166534;--accent-ink:#ffffff;--accent-soft:#e3f1e6;
+  --s-new:#eceff2;--s-new-i:#3f4650;
+  --s-na:#fdf0d9;--s-na-i:#8a5300;
+  --s-talk:#e6eefc;--s-talk-i:#1e48a8;
+  --s-fu:#efe7fb;--s-fu-i:#5b2fa6;
+  --s-int:#ddf3f1;--s-int-i:#0d6b62;
+  --s-won:#dcf1e1;--s-won-i:#166534;
+  --s-paid:#166534;--s-paid-i:#ffffff;
+  --s-lost:#fbe4e2;--s-lost-i:#a3261b;
+  --r:10px;
+}
+*{box-sizing:border-box;margin:0}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--ink);font:15px/1.45 "Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;font-variant-numeric:tabular-nums}
+a{color:inherit}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.top{background:var(--ink);color:#fff}
+.top .wrap{display:flex;align-items:center;gap:16px;padding-top:14px;padding-bottom:14px}
+.brand{font-weight:700;font-size:17px;letter-spacing:-.01em}
+.brand span{color:#9aa0a8;font-weight:400;margin-left:8px;font-size:14px}
+.top .acts{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
+.tbtn{background:transparent;border:1px solid #3a3f46;color:#e8e8e8;border-radius:8px;padding:7px 12px;font-size:13.5px;text-decoration:none;white-space:nowrap}
+.tbtn:hover{border-color:#6b717a;color:#fff}
+.tbtn.primary{background:#fff;color:var(--ink);border-color:#fff;font-weight:600}
+.wrap{max-width:1320px;margin:0 auto;padding-left:20px;padding-right:20px}
+
+.stats{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;margin:18px 0 14px}
+.stat{background:var(--panel);padding:12px 14px;text-align:left;border:0;display:block;width:100%}
+.stat:hover{background:#fafaf8}
+.stat[aria-pressed="true"]{box-shadow:inset 0 -3px 0 var(--accent)}
+.stat b{display:block;font-size:22px;font-weight:700;letter-spacing:-.02em;line-height:1.15}
+.stat small{color:var(--ink-3);font-size:12.5px}
+.stat.money b{color:var(--accent)}
+
+.bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.tabs{display:flex;gap:4px;flex-wrap:wrap}
+.tab{border:1px solid var(--line-2);background:var(--panel);border-radius:999px;padding:6px 13px;font-size:13.5px;color:var(--ink-2)}
+.tab em{font-style:normal;color:var(--ink-3);margin-left:4px}
+.tab[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.tab[aria-pressed="true"] em{color:#b9bec5}
+.search{flex:1;min-width:200px;position:relative}
+.search input{width:100%;border:1px solid var(--line-2);background:var(--panel);border-radius:8px;padding:8px 12px}
+.sel{border:1px solid var(--line-2);background:var(--panel);border-radius:8px;padding:8px 10px;font-size:14px}
+
+.list{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.row{display:grid;grid-template-columns:36px minmax(0,2.3fr) minmax(0,1.5fr) minmax(0,1.6fr) 150px 128px 92px;gap:14px;align-items:center;padding:12px 16px;border-top:1px solid var(--line)}
+.row:first-child{border-top:0}
+.row.head{background:#fafaf8;color:var(--ink-3);font-size:12px;text-transform:uppercase;letter-spacing:.06em;padding-top:9px;padding-bottom:9px}
+.row.done .nm{color:var(--ink-2)}
+.row:not(.head):hover{background:#fbfbf9}
+.chk{width:20px;height:20px;accent-color:var(--accent);cursor:pointer}
+.nm{font-weight:600;line-height:1.3;cursor:pointer;background:none;border:0;padding:0;text-align:left}
+.nm:hover{text-decoration:underline;text-underline-offset:3px}
+.meta{color:var(--ink-3);font-size:13px;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.meta .star{color:#b45309}
+.ph{font-weight:600;text-decoration:none;white-space:nowrap}
+.ph:hover{color:var(--accent)}
+.who{color:var(--ink-3);font-size:13px}
+.links{display:flex;gap:6px;flex-wrap:wrap}
+.lk{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line-2);border-radius:7px;padding:4px 9px;font-size:13px;text-decoration:none;color:var(--ink-2);background:var(--panel);white-space:nowrap}
+.lk:hover{border-color:var(--ink-2);color:var(--ink)}
+.lk.wa{border-color:#bfe3c9;color:#166534;background:#f2faf4}
+.lk.wa:hover{border-color:#166534}
+.lk.vid{border-color:var(--ink);color:#fff;background:var(--ink)}
+.lk.vid:hover{background:#000}
+.lk svg{width:14px;height:14px;flex:none}
+.st{appearance:none;-webkit-appearance:none;border:0;border-radius:999px;padding:6px 26px 6px 12px;font-size:13px;font-weight:600;width:100%;background-repeat:no-repeat;background-position:right 9px center;background-size:9px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23555' stroke-width='1.6'/%3E%3C/svg%3E")}
+.date{border:1px solid var(--line-2);border-radius:8px;padding:5px 6px;font-size:13px;width:100%;background:var(--panel)}
+.date.due{border-color:#d97706;background:#fff8ec;color:#8a5300;font-weight:600}
+.deal{font-weight:700;color:var(--accent);font-size:14px}
+.open{border:1px solid var(--line-2);background:var(--panel);border-radius:8px;padding:6px 10px;font-size:13px;width:100%}
+.open:hover{border-color:var(--ink)}
+.empty{padding:48px 20px;text-align:center;color:var(--ink-3)}
+
+[data-s="new"]{background-color:var(--s-new);color:var(--s-new-i)}
+[data-s="no_answer"]{background-color:var(--s-na);color:var(--s-na-i)}
+[data-s="talked"]{background-color:var(--s-talk);color:var(--s-talk-i)}
+[data-s="follow_up"]{background-color:var(--s-fu);color:var(--s-fu-i)}
+[data-s="interested"]{background-color:var(--s-int);color:var(--s-int-i)}
+[data-s="agreed"]{background-color:var(--s-won);color:var(--s-won-i)}
+[data-s="paid"]{background-color:var(--s-paid);color:var(--s-paid-i)}
+[data-s="lost"]{background-color:var(--s-lost);color:var(--s-lost-i)}
+
+/* drawer */
+.scrim{position:fixed;inset:0;background:rgba(15,17,20,.38);opacity:0;pointer-events:none;transition:opacity .18s}
+.scrim.on{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(560px,100%);background:var(--panel);transform:translateX(100%);transition:transform .22s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column;border-left:1px solid var(--line)}
+.drawer.on{transform:none}
+.dh{padding:18px 22px 14px;border-bottom:1px solid var(--line)}
+.dh .x{float:right;border:1px solid var(--line-2);background:var(--panel);border-radius:8px;width:34px;height:34px;font-size:18px;line-height:1}
+.dh h2{font-size:20px;letter-spacing:-.015em;line-height:1.25;padding-right:44px}
+.dh .meta{white-space:normal;margin-top:4px}
+.dh .links{margin-top:12px}
+.db{overflow:auto;padding:6px 22px 30px;flex:1}
+.sec{padding:16px 0;border-bottom:1px solid var(--line)}
+.sec:last-child{border-bottom:0}
+.sec h3{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-3);margin-bottom:10px;font-weight:600}
+.research{background:#fafaf8;border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:14px;color:var(--ink-2)}
+.pills{display:flex;flex-wrap:wrap;gap:6px}
+.pill{border:1px solid transparent;border-radius:999px;padding:6px 12px;font-size:13px;font-weight:600;opacity:.55}
+.pill[aria-pressed="true"]{opacity:1;border-color:currentColor}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+label.f{display:block;font-size:13px;color:var(--ink-2)}
+label.f > span{display:block;margin-bottom:4px}
+.in{width:100%;border:1px solid var(--line-2);border-radius:8px;padding:8px 10px;background:var(--panel)}
+textarea.in{min-height:84px;resize:vertical;line-height:1.45}
+.pkgs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px}
+.pkg{border:1px solid var(--line-2);background:var(--panel);border-radius:8px;padding:8px 6px;text-align:center;font-size:13px}
+.pkg b{display:block;font-size:14px}
+.pkg[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+.feats{display:grid;grid-template-columns:1fr 1fr;gap:6px 14px;margin:12px 0}
+.feats label{display:flex;gap:8px;align-items:flex-start;font-size:13.5px;cursor:pointer}
+.feats input{accent-color:var(--accent);width:16px;height:16px;margin-top:2px;flex:none}
+.quick{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.qb{border:1px solid var(--line-2);background:var(--panel);border-radius:8px;padding:6px 10px;font-size:13px}
+.qb:hover{border-color:var(--ink)}
+.log{list-style:none;padding:0;font-size:13.5px}
+.log li{padding:7px 0;border-top:1px dashed var(--line);display:grid;grid-template-columns:118px 1fr;gap:10px}
+.log li:first-child{border-top:0}
+.log time{color:var(--ink-3);font-size:12.5px}
+.addlog{display:flex;gap:6px;margin-top:8px}
+.addlog .in{flex:1}
+.btn{border:1px solid var(--ink);background:var(--ink);color:#fff;border-radius:8px;padding:8px 14px;font-size:14px;font-weight:600}
+.btn.ghost{background:var(--panel);color:var(--ink);border-color:var(--line-2)}
+.btn.danger{background:var(--panel);color:#a3261b;border-color:#e8b9b4}
+.hide{display:none!important}
+.hint{color:var(--ink-3);font-size:12.5px;margin-top:6px}
+.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:10px 16px;border-radius:8px;font-size:14px;opacity:0;transition:.2s;pointer-events:none;z-index:9}
+.toast.on{opacity:1;transform:translateX(-50%)}
+dialog{border:1px solid var(--line);border-radius:12px;padding:0;width:min(520px,calc(100% - 32px))}
+dialog::backdrop{background:rgba(15,17,20,.38)}
+dialog form{padding:20px 22px}
+dialog h2{font-size:18px;margin-bottom:14px}
+dialog .grid2{margin-bottom:10px}
+dialog .acts{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}
+.foot{color:var(--ink-3);font-size:12.5px;margin:16px 0 40px}
+
+@media (max-width:1100px){
+  .stats{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .row{grid-template-columns:30px minmax(0,1fr) minmax(0,1fr);grid-template-areas:"c n n" "c p l" "c s d" "c o o";row-gap:10px}
+  .row.head{display:none}
+  .row > :nth-child(1){grid-area:c;align-self:start;margin-top:2px}
+  .row > :nth-child(2){grid-area:n}
+  .row > :nth-child(3){grid-area:p}
+  .row > :nth-child(4){grid-area:l}
+  .row > :nth-child(5){grid-area:s}
+  .row > :nth-child(6){grid-area:d}
+  .row > :nth-child(7){grid-area:o}
+}
+@media (max-width:640px){
+  .wrap{padding-left:16px;padding-right:16px}
+  .top .wrap{flex-wrap:wrap}
+  .top .acts{margin-left:0}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .row{grid-template-columns:26px minmax(0,1fr);grid-template-areas:"c n" "c p" "c l" "c s" "c d" "c o"}
+  .pkgs{grid-template-columns:1fr 1fr}
+  .feats,.grid2{grid-template-columns:1fr}
+  .dh,.db{padding-left:16px;padding-right:16px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <div class="brand">LocalLift Leads<span id="sub"></span></div>
+    <div class="acts">
+      <a class="tbtn" href="https://locallift-call-script.vercel.app" target="_blank" rel="noopener">Call script</a>
+      <button class="tbtn" id="bAdd">+ Add lead</button>
+      <button class="tbtn" id="bCsv">Export CSV</button>
+      <button class="tbtn" id="bExp">Backup</button>
+      <button class="tbtn" id="bImp">Restore</button>
+      <input type="file" id="fImp" accept="application/json,.json" class="hide">
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="stats" id="stats"></div>
+  <div class="bar">
+    <div class="tabs" id="tabs"></div>
+    <div class="search"><input id="q" type="search" placeholder="Search name, area, phone, notes…" aria-label="Search leads"></div>
+    <select class="sel" id="fStatus" aria-label="Filter by status"></select>
+    <select class="sel" id="sort" aria-label="Sort">
+      <option value="order">Sort: original order</option>
+      <option value="follow">Sort: follow-up date</option>
+      <option value="reviews">Sort: most reviews</option>
+      <option value="updated">Sort: last updated</option>
+    </select>
+  </div>
+  <div class="list" id="list" role="table" aria-label="Leads"></div>
+  <p class="foot">Your progress saves automatically in this browser. Use <b>Backup</b> to download a file, and <b>Restore</b> to load it on another computer or browser. Videos download from GitHub when you click <b>Video</b>.</p>
+</main>
+
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" aria-hidden="true" aria-labelledby="dName"></aside>
+
+<dialog id="dlgAdd">
+  <form method="dialog" id="fAdd">
+    <h2>Add a lead</h2>
+    <div class="grid2">
+      <label class="f"><span>Business name *</span><input class="in" name="name" required></label>
+      <label class="f"><span>Category</span><select class="in" name="cat"><option>Gym</option><option>Fitness</option><option>Restaurant</option><option>Plumber</option><option>Other</option></select></label>
+      <label class="f"><span>Phone *</span><input class="in" name="phone" required placeholder="+91 98xxx xxxxx"></label>
+      <label class="f"><span>Contact person</span><input class="in" name="contact" placeholder="ji"></label>
+      <label class="f"><span>Area</span><input class="in" name="area"></label>
+      <label class="f"><span>Google rating / reviews</span><input class="in" name="rr" placeholder="4.8 / 210"></label>
+    </div>
+    <label class="f" style="margin-bottom:10px"><span>Website demo link</span><input class="in" name="site" type="url" placeholder="https://"></label>
+    <label class="f"><span>Video link</span><input class="in" name="video" type="url" placeholder="https://"></label>
+    <div class="acts"><button class="btn ghost" value="cancel" formnovalidate>Cancel</button><button class="btn" value="ok">Add lead</button></div>
+  </form>
+</dialog>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+const SEED = [{"id":"plu-01","cat":"Plumber","batch":"Plumbers","name":"Ganesh – Best Plumber Service Gurgaon","contact":"Ganesh Prasad ji","phone":"+919717167154","rating":"4.9","reviews":"341","area":"Wazirabad, Sector 52","site":"https://ganesh-plumber-gurgaon.vercel.app","video":"https://github.com/Shabbir-Nuruddin/locallift-demo-videos/releases/download/v1/plumbers-01-ganesh.mp4","maps":"https://www.google.com/maps/search/?api=1&query=Ganesh%20-%20Best%20Plumber%20Service%20Gurgaon&query_place_id=ChIJy7jjktoZDTkRhY-Ee3J1lyY","note":"Template site. Best-reviewed lead; start here."},{"id":"plu-02","cat":"Plumber","batch":"Plumbers","name":"PK Plumbing Services","contact":"ji","phone":"+917678529137","rating":"4.9","reviews":"337","area":"Islampur Village, Sector 38","site":"https://pk-plumbing-gurgaon.vercel.app","video":"https://github.com/Shabbir-Nuruddin/locallift-demo-videos/releases/download/v1/plumbers-02-pk-plumbing.mp4","maps":"https://www.google.com/maps/place/?q=place_id:ChIJ09J59o4ZDTkRvF-ShByLFSE","note":"FLAG: PK and Jagnath look like the same operator (same area, overlapping details). Send to ONE of them Monday, or wait a few days before the other."},{"id":"plu-03","cat":"Plumber","batch":"Plumbers","name":"Chinmay (Electrician maintenance and plumber work and a/c servicing)","contact":"Chinmay ji","phone":"+917532046533","rating":"5.0","reviews":"312","area":"Wazirabad, mata chowk","site":"https://chinmay-electric-plumbing-gurgaon.vercel.app","video":"https://github.com/Shabbir-Nuruddin/locallift-demo-videos/releases/download/v1/plumbers-03-chinmay.mp4","maps":"https://www.google.com/maps/place/?q=place_id:ChIJt2-CFD8ZDTkRXk7l4rsLsjg","note":"Listing name is generic; the site rebrands him as 'Chinmay'. Mention it only if he asks."},{"id":"plu-04","cat":"Plumber","batch":"Plumbers","name":"RM Plumbing Services","contact":"Rafiq bhai","phone":"+917602780146","rating":"4.8","reviews":"186","area":"Sushant Lok III, Sector 57","site":"https://rm-plumbing-gurgaon.vercel.app","video":"https://github.com/Shabbir-Nuruddin/locallift-demo-videos/releases/download/v1/plumbers-04-rm-plumbing.mp4","maps":"https://www.google.com/maps/place/?q=place_id:ChIJ-6xbc64jDTkRnlq8MwCxoEc","note":"FLAG: same map coordinates as an excluded lead (Rohit). Could be a shared address; don't mention it."},{"id":"plu-05","cat":"Plumber","batch":"Plumbers","name":"S. Parida Plumber","contact":"Parida ji","phone":"+917701843215","rating":"4.9","reviews":"107","area":"DLF Phase 1, Sector 24","site":"https://sparida-plumber-gurgaon.vercel.app","video":"https://github.com/Shabbir-Nuruddin/locallift-demo-videos/releases/download/v1/plumbers-05-sparida.mp4","maps":"https://www.google.com/maps/place/?q=place_id:ChIJeeTgY3kZDTkRa5JIzDBIEu4","note":""},{"id":"plu-06","cat":"Plumber","batch":"Plumbers","name":"Jagnath Plumbing Services","contact":"ji","phone":"+919667890822","rating":"4.9","reviews":"103","area":"Islampur Village, Sector 38","site":"https://jagnath-plumbing-gurgaon.vercel.app","video":"https://github.com/Shabbir-Nuruddin/locallift-demo-videos/releases/download/v1/plumbers-06-jagnath.mp4","maps":"https://www.google.com/maps/place/?q=place_id:ChIJ53dynHAZDTkRHT6GFZXNvcM","note":"FLAG: likely same operator as PK (row 2). If you already sent PK, hold this one."},{"id":"plu-07","cat":"Plumber","batch":"Plumbers","name":"Krishna Plumbing Electrical Services","contact":"Krishna ji","phone":"+919871345787","rating":"4.9","reviews":"76","area":"DLF Phase 5, Sector 42","site":"https://krishna-plumbing-gurgaon.vercel.app","video":"https://github.com/Shabbir-Nuruddin/locallift-demo-videos/releases/download/v1/plumbers-07-krishna.mp4","maps":"https://www.google.com/maps/place/?q=place_id:ChIJvZVDbTAZDTkReYGoto3pkeQ","note":""},{"id":"plu-08","cat":"Plumber","batch":"Plumbers","name":"Plumber Pro Plus","contact":"Akshay ji","phone":"+918249452726","rating":"4.9","reviews":"69","area":"Sector 52, Bindapur","site":"https://plumber-pro-plus-gurgaon.vercel.app","video":"https://github.com/Shabbir-Nuruddin/locallift-demo-videos/releases/download/v1/plumbers-08-plumber-pro-plus.mp4","maps":"https://www.google.com/maps/place/?q=place_id:ChIJ__8TcZAYDTkR11v6VAXmdiU","note":"FLAG: a review says the listed contact details were wrong. Confirm this number reaches Akshay before relying on the reply. Suggest he also fix the Google listing."},{"id":"plu-09","cat":"Plumber","batch":"Plumbers","name":"Akash Plumber Service (Palam Vihar)","contact":"Akash ji","phone":"+917065502807","rating":"4.9","reviews":"56","area":"near ROYAL OAK INTERNATIONAL SCHOOL, PHASE 2","site":"https://akash-plumber-palam-vihar.vercel.app","video":"https://github.com/Shabbir-Nuruddin/locallift-demo-videos/releases/download/v1/plumbers-09-akash.mp4","maps":"https://www.google.com/maps/place/?q=place_id:ChIJ_ceOeXgZDTkRBKn5u_P_8zs","note":"FLAG: listing photos look like stock, so the site has empty photo slots instead. Good opener: ask for real job photos."},{"id":"plu-10","cat":"Plumber","batch":"Plumbers","name":"Bikram Electrician & Plumber","contact":"Bikram ji","phone":"+917077670736","rating":"4.9","reviews":"53","area":"Sector 45, Sector 38","site":"https://bikram-electrician-plumber.vercel.app","video":"https://github.com/Shabbir-Nuruddin/locallift-demo-videos/releases/download/v1/plumbers-10-bikram.mp4","maps":"https://www.google.com/maps/search/?api=1&query=Bikram%20Electrician%20%26%20Plumber&query_place_id=ChIJgdl7aL4ZDTkRyh6PtTgZiq8","note":""},{"id":"gym-11","cat":"Gym","batch":"Gyms · batch 1","name":"Yogadhyay Fitness Academy","contact":"Mukund ji","phone":"+919896903396","rating":"4.9","reviews":"536","area":"opposite Mamta hospital, Sohna","site":"https://yogadhyay-fitness-sohna.vercel.app","video":"https://github.com/Shabbir-Nuruddin/locallift-demo-videos/releases/download/v1/gyms-01-yogadhyay.mp4","maps":"https://www.google.com/maps/search/?api=1&query=Yogadhyay%20Fitness%20Academy&query_place_id=ChIJH9aWa5AlDTkRyMRBKRKrEuw","note":"Biggest review count. Reviews name Mukund Sharma as the coach and dietician; confirm he's the owner on the call."},{"id":"gym-12","cat":"Gym","batch":"Gyms · batch 1","name":"Energie Fitness","contact":"Umesh ji","phone":"+917800372003","rating":"4.8","reviews":"107","area":"opposite Shanti Vihar, Sector 95","site":"https://energie-fitness-gurgaon.vercel.app","video":"https://github.com/Shabbir-Nuruddin/locallift-demo-videos/releases/download/v1/gyms-02-energie-fitness.mp4","maps":"https://www.google.com/maps/search/?api=1&query=ENERGIE%20FITNESS&query_place_id=ChIJ55P3cwYVDTkRUegMOFqlRmA","note":"Reviews say Umesh is owner and main trainer."},{"id":"gym-13","cat":"Gym","batch":"Gyms · batch 1","name":"NFC Gym","contact":"ji","phone":"+918059246529","rating":"4.8","reviews":"99","area":"Gurugram","site":"https://nfc-gym-pataudi.vercel.app","video":"https://github.com/Shabbir-Nuruddin/locallift-demo-videos/releases/download/v1/gyms-03-nfc-gym.mp4","maps":"https://www.google.com/maps/search/?api=1&query=NFC%20GYM&query_place_id=ChIJ7R6rx29BDTkRrVYeZ7VQ5yo","note":"Nikhil may be the coach, not the owner. Address as 'ji'."},{"id":"gym-14","cat":"Gym","batch":"Gyms · batch 1","name":"GR Fitness Point","contact":"ji","phone":"+919990600403","rating":"4.9","reviews":"90","area":"Panchgaon, Fazalwas","site":"https://gr-fitness-point.vercel.app","video":"https://github.com/Shabbir-Nuruddin/locallift-demo-videos/releases/download/v1/gyms-04-gr-fitness-point.mp4","maps":"https://www.google.com/maps/search/?api=1&query=GR%20FITNESS%20POINT&query_place_id=ChIJlYXbYMM5DTkRisAUkZPIHLM","note":"Angle: zero one-star reviews; hex-neon ceiling is the visual hook."},{"id":"gym-15","cat":"Gym","batch":"Gyms · batch 1","name":"Bajrang Fitness Gym","contact":"ji","phone":"+918700078900","rating":"4.8","reviews":"86","area":"IMT Manesar, Khoh","site":"https://bajrang-fitness-gym.vercel.app","video":"https://github.com/Shabbir-Nuruddin/locallift-demo-videos/releases/download/v1/gyms-05-bajrang-fitness.mp4","maps":"https://www.google.com/maps/search/?api=1&query=BAJRANG%20FITNESS%20GYM&query_place_id=ChIJT4QA7bc9DTkRecZN3QjSIio","note":"Angle: IMT workers new to the area."},{"id":"gym-16","cat":"Gym","batch":"Gyms · batch 1","name":"RMS Fitness","contact":"ji","phone":"+918700505705","rating":"4.6","reviews":"70","area":"Sector 7, IMT Manesar","site":"https://rms-fitness-manesar.vercel.app","video":"https://github.com/Shabbir-Nuruddin/locallift-demo-videos/releases/download/v1/gyms-06-rms-fitness.mp4","maps":"https://www.google.com/maps/search/?api=1&query=RMS%20Fitness-The%20Gym&query_place_id=ChIJpeUkBIk_DTkRan7sLHU5pJk","note":"Angle: open lawn + parking."},{"id":"gym-17","cat":"Gym","batch":"Gyms · batch 1","name":"MD Fitness World","contact":"ji","phone":"+918607672721","rating":"4.9","reviews":"48","area":"Raipur","site":"https://md-fitness-world-sohna.vercel.app","video":"https://github.com/Shabbir-Nuruddin/locallift-demo-videos/releases/download/v1/gyms-07-md-fitness-world.mp4","maps":"https://www.google.com/maps/search/?api=1&query=Md%20fitness%20world&query_place_id=ChIJe40yYcovDTkRlRiYLSTodLk","note":"Google lists 24 hours; confirm on the call."},{"id":"gym-18","cat":"Gym","batch":"Gyms · batch 1","name":"The Fitness Lab","contact":"ji","phone":"+919518800575","rating":"5.0","reviews":"40","area":"Patli, Gurgaon","site":"https://the-fitness-lab-patli.vercel.app","video":"https://github.com/Shabbir-Nuruddin/locallift-demo-videos/releases/download/v1/gyms-08-the-fitness-lab.mp4","maps":"https://www.google.com/maps/search/?api=1&query=THE%20FITNESS%20LAB&query_place_id=ChIJ33HztvI_DTkRshXHkgG88rc","note":"Angle: perfect 5.0."},{"id":"gym-19","cat":"Gym","batch":"Gyms · batch 1","name":"Dream Fitness","contact":"ji","phone":"+917838866202","rating":"5.0","reviews":"35","area":"Kankrola, Sector 87","site":"https://dream-fitness-sector-87.vercel.app","video":"https://github.com/Shabbir-Nuruddin/locallift-demo-videos/releases/download/v1/gyms-09-dream-fitness.mp4","maps":"https://www.google.com/maps/search/?api=1&query=DREAM%20FITNESS&query_place_id=ChIJW1yxAwA9DTkRpYYmvuasNII","note":"Angle: imported machines + new societies nearby."},{"id":"gym-20","cat":"Gym","batch":"Gyms · batch 1","name":"JS Fitness Gym","contact":"Jai ji","phone":"+919813041892","rating":"4.9","reviews":"35","area":"Saini Colony, Sohna","site":"https://js-fitness-gym-sohna.vercel.app","video":"https://github.com/Shabbir-Nuruddin/locallift-demo-videos/releases/download/v1/gyms-10-js-fitness-gym.mp4","maps":"https://www.google.com/maps/search/?api=1&query=JS%20Fitness%20Gym%20%E2%80%93%20Sohna&query_place_id=ChIJ64btSgAlDTkRCPb_nLv-ttU","note":"Reviews name the owner as Jai Prakash Saini."},{"id":"res-21","cat":"Restaurant","batch":"Restaurants · batch 1","name":"The Black Salt","contact":"ji","phone":"+919319080715","rating":"4.6","reviews":"1254","area":"S 215 Second floor, Sector 90","site":"https://black-salt-sector-90.vercel.app","video":"https://github.com/Shabbir-Nuruddin/locallift-demo-videos/releases/download/v1/restaurants-01-black-salt.mp4","maps":"https://www.google.com/maps/place/?q=place_id:ChIJ4fOlKs49DTkRc06WBFn-d3w","note":"Biggest review count in this batch. Angle: parties and occasions."},{"id":"res-22","cat":"Restaurant","batch":"Restaurants · batch 1","name":"Bellagio","contact":"ji","phone":"+918130476700","rating":"4.3","reviews":"2218","area":"Sector 58, Ghata","site":"https://bellagio-gurugram.vercel.app","video":"https://github.com/Shabbir-Nuruddin/locallift-demo-videos/releases/download/v1/restaurants-02-bellagio.mp4","maps":"https://www.google.com/maps/place/?q=place_id:ChIJZ9F-7mYhDTkRM7VNZubFfGw","note":"Largest listing; may already lean on Zomato/Swiggy. Angle: rooftop nights + direct bookings."},{"id":"res-23","cat":"Restaurant","batch":"Restaurants · batch 1","name":"Sanduja Food Palace","contact":"ji","phone":"+919896296629","rating":"4.1","reviews":"565","area":"Sanduja Food Palace, Delhi – Alwar Rd","site":"https://sanduja-food-palace-sohna.vercel.app","video":"https://github.com/Shabbir-Nuruddin/locallift-demo-videos/releases/download/v1/restaurants-03-sanduja-food-palace.mp4","maps":"https://www.google.com/maps/place/?q=place_id:ChIJZ6Cqz44lDTkRoYKmTtADfPY","note":"Angle: party hall + catering enquiries."},{"id":"res-24","cat":"Restaurant","batch":"Restaurants · batch 1","name":"Bali Sweet & Restaurant","contact":"ji","phone":"+919812861798","rating":"4.1","reviews":"589","area":"ITI Colony, Sohna","site":"https://bali-sweets-sohna.vercel.app","video":"https://github.com/Shabbir-Nuruddin/locallift-demo-videos/releases/download/v1/restaurants-04-bali-sweets.mp4","maps":"https://www.google.com/maps/place/?q=place_id:ChIJ--eyKYglDTkRLrIXWuCXNBg","note":"Diwali is early November; good timing hook."},{"id":"res-25","cat":"Restaurant","batch":"Restaurants · batch 1","name":"Rao Restaurant","contact":"ji","phone":"+919991785470","rating":"4.1","reviews":"334","area":"Gurugram","site":"https://rao-restaurant-sohna.vercel.app","video":"https://github.com/Shabbir-Nuruddin/locallift-demo-videos/releases/download/v1/restaurants-05-rao-restaurant.mp4","maps":"https://www.google.com/maps/place/?q=place_id:ChIJuVDKmvUoDTkR7JwTCnwJG3c","note":"Angle: pure-milk sweets."},{"id":"res-26","cat":"Restaurant","batch":"Restaurants · batch 1","name":"Lazeez Restaurant","contact":"ji","phone":"+918396894583","rating":"4.0","reviews":"297","area":"Durga Colony, Sohna","site":"https://lazeez-restaurant-sohna.vercel.app","video":"https://github.com/Shabbir-Nuruddin/locallift-demo-videos/releases/download/v1/restaurants-06-lazeez-restaurant.mp4","maps":"https://www.google.com/maps/place/?q=place_id:ChIJdy-olJYvDTkRLqFlUe-PI20","note":"Angle: handi menu + direct WhatsApp orders."},{"id":"res-27","cat":"Restaurant","batch":"Restaurants · batch 1","name":"Special Village Food","contact":"ji","phone":"+919671226507","rating":"4.1","reviews":"233","area":"Damdma","site":"https://special-village-food-damdama.vercel.app","video":"https://github.com/Shabbir-Nuruddin/locallift-demo-videos/releases/download/v1/restaurants-07-special-village-food.mp4","maps":"https://www.google.com/maps/place/?q=place_id:ChIJX1RJCYYnDTkRsVw8LgruNvw","note":"Angle: group bookings in advance (reviewers ask for it)."},{"id":"res-28","cat":"Restaurant","batch":"Restaurants · batch 1","name":"The RoadSide Cafe","contact":"ji","phone":"+919992839047","rating":"4.1","reviews":"218","area":"Badshahpur Sohna Rd","site":"https://roadside-cafe-sohna.vercel.app","video":"https://github.com/Shabbir-Nuruddin/locallift-demo-videos/releases/download/v1/restaurants-08-roadside-cafe.mp4","maps":"https://www.google.com/maps/place/?q=place_id:ChIJmTWyDLQlDTkR7yyXuEIrfoE","note":"Angle: college crowd + shareable link."},{"id":"res-29","cat":"Restaurant","batch":"Restaurants · batch 1","name":"Elite House Cafe & Restaurant","contact":"ji","phone":"+919817603004","rating":"4.4","reviews":"84","area":"near GD Goenka University, Sohna","site":"https://elite-house-cafe-sohna.vercel.app","video":"https://github.com/Shabbir-Nuruddin/locallift-demo-videos/releases/download/v1/restaurants-09-elite-house-cafe.mp4","maps":"https://www.google.com/maps/place/?q=place_id:ChIJi9TfZ4YlDTkRCAd4OzFxV4k","note":"Bharat is a waiter per reviews, not the owner. Address the owner as 'ji'."},{"id":"res-30","cat":"Restaurant","batch":"Restaurants · batch 1","name":"Shree Siddhi Ji Restaurant","contact":"ji","phone":"+919650728208","rating":"4.7","reviews":"81","area":"Dhunela, Sohna","site":"https://shree-siddhi-ji-sohna.vercel.app","video":"https://github.com/Shabbir-Nuruddin/locallift-demo-videos/releases/download/v1/restaurants-10-shree-siddhi-ji.mp4","maps":"https://www.google.com/maps/place/?q=place_id:ChIJBfii3KYlDTkRfmWTWwiPxEE","note":"Highest rating in the batch. Angle: owner's personal touch."},{"id":"res-31","cat":"Restaurant","batch":"Restaurants · batch 2","name":"Veg Haveli","contact":"ji","phone":"+919253115771","rating":"4.6","reviews":"793","area":"Rajoria Nagar, Sohna","site":"https://veg-haveli-sohna.vercel.app","video":"https://github.com/Shabbir-Nuruddin/locallift-demo-videos/releases/download/v1/restaurants-11-veg-haveli.mp4","maps":"https://www.google.com/maps/place/?q=place_id:ChIJ4czEYvolDTkRRB6EWnxKBxE","note":"Biggest listing in this batch. Angle: occasions + catering."},{"id":"res-32","cat":"Restaurant","batch":"Restaurants · batch 2","name":"Sohna Delight Restaurant","contact":"ji","phone":"+918059272434","rating":"4.0","reviews":"451","area":"Sohna","site":"https://sohna-delight-restaurant.vercel.app","video":"https://github.com/Shabbir-Nuruddin/locallift-demo-videos/releases/download/v1/restaurants-12-sohna-delight.mp4","maps":"https://www.google.com/maps/place/?q=place_id:ChIJd9MCroklDTkRLVUFKRmDG1g","note":"Rating 4.0 with 49 one-star reviews; site uses only real positive quotes. Don't bring up the rating."},{"id":"res-33","cat":"Restaurant","batch":"Restaurants · batch 2","name":"Prakash Dhaba","contact":"ji","phone":"+919416274105","rating":"4.2","reviews":"358","area":"Gurudwara road Old bus stand, Sohna","site":"https://prakash-dhaba-sohna.vercel.app","video":"https://github.com/Shabbir-Nuruddin/locallift-demo-videos/releases/download/v1/restaurants-13-prakash-dhaba.mp4","maps":"https://www.google.com/maps/place/?q=place_id:ChIJXRZaaoQlDTkRKQatRt6xZF4","note":"Old family dhaba near the Gurudwara. Angle: legacy + catering."},{"id":"res-34","cat":"Restaurant","batch":"Restaurants · batch 2","name":"The South Trails","contact":"ji","phone":"+919220338897","rating":"4.8","reviews":"78","area":"Sector 36, Sohna","site":"https://the-south-trails-sohna.vercel.app","video":"https://github.com/Shabbir-Nuruddin/locallift-demo-videos/releases/download/v1/restaurants-14-south-trails.mp4","maps":"https://www.google.com/maps/place/?q=place_id:ChIJi_2MSlMlDTkRvFQ9nqD34Ls","note":"Small shop, very high rating. Angle: direct WhatsApp orders."},{"id":"res-35","cat":"Restaurant","batch":"Restaurants · batch 2","name":"Chai Tapri Cafe","contact":"ji","phone":"+919992747656","rating":"4.6","reviews":"77","area":"NH-248A, Sohna","site":"https://chai-tapri-cafe-sohna.vercel.app","video":"https://github.com/Shabbir-Nuruddin/locallift-demo-videos/releases/download/v1/restaurants-15-chai-tapri.mp4","maps":"https://www.google.com/maps/place/?q=place_id:ChIJ9eYkqAQlDTkRRz57mK4jKn8","note":"Open 7am–1am. Angle: music nights + shareable link."},{"id":"res-36","cat":"Restaurant","batch":"Restaurants · batch 2","name":"In The Punjab","contact":"ji","phone":"+917428291632","rating":"4.6","reviews":"208","area":"Badshahpur, Sector 66","site":"https://in-the-punjab-ifc.vercel.app","video":"https://github.com/Shabbir-Nuruddin/locallift-demo-videos/releases/download/v1/restaurants-16-in-the-punjab.mp4","maps":"https://www.google.com/maps/place/?q=place_id:ChIJGflm24ojDTkRVHw2ZpfY4v4","note":"May be a chain outlet; if they say head office decides, ask for the right contact and move on."},{"id":"res-37","cat":"Restaurant","batch":"Restaurants · batch 2","name":"HAT'S FOOD","contact":"ji","phone":"+918595252509","rating":"4.9","reviews":"133","area":"Badshahpur, Sector 69","site":"https://hats-food-badshahpur.vercel.app","video":"https://github.com/Shabbir-Nuruddin/locallift-demo-videos/releases/download/v1/restaurants-17-hats-food.mp4","maps":"https://www.google.com/maps/place/?q=place_id:ChIJQynFr3ojDTkR080oVTtrM04","note":"Highest rating in the batch. Angle: direct orders."},{"id":"res-38","cat":"Restaurant","batch":"Restaurants · batch 2","name":"The Raffles Restaurant","contact":"ji","phone":"+919991421781","rating":"4.5","reviews":"148","area":"Shyam Kunj, Maruti Kunj","site":"https://raffles-restaurant-maruti-kunj.vercel.app","video":"https://github.com/Shabbir-Nuruddin/locallift-demo-videos/releases/download/v1/restaurants-18-raffles.mp4","maps":"https://www.google.com/maps/place/?q=place_id:ChIJZW4cd6UjDTkR0x5vpszqhaM","note":"Angle: party hall bookings."},{"id":"res-39","cat":"Restaurant","batch":"Restaurants · batch 2","name":"The Hungry Man","contact":"ji","phone":"+919873293955","rating":"4.5","reviews":"786","area":"Sector 49, Fatehpur","site":"https://the-hungry-man-south-city.vercel.app","video":"https://github.com/Shabbir-Nuruddin/locallift-demo-videos/releases/download/v1/restaurants-19-hungry-man.mp4","maps":"https://www.google.com/maps/place/?q=place_id:ChIJ4-mxFCcjDTkRsx-RQngdh9M","note":"Open 24h. Has 74 one-star reviews; site uses only real positive quotes."},{"id":"res-40","cat":"Restaurant","batch":"Restaurants · batch 2","name":"Shree Saawariya Dhaba","contact":"ji","phone":"+919711403338","rating":"4.5","reviews":"130","area":"Badshahpur Sohna Rd, Sector 48","site":"https://shree-saawariya-dhaba.vercel.app","video":"https://github.com/Shabbir-Nuruddin/locallift-demo-videos/releases/download/v1/restaurants-20-shree-saawariya.mp4","maps":"https://www.google.com/maps/place/?q=place_id:ChIJhWSz4wwjDTkRYSgp3ujAdU4","note":"Open 24h. Angle: parathas any hour."},{"id":"fit-41","cat":"Fitness","batch":"Fitness & martial arts","name":"TAEDAS Academy","contact":"ji","phone":"+918860553257","rating":"4.9","reviews":"478","area":"GAIL Society, Sector 56","site":"https://taedas-academy-pvt-ltd.vercel.app","video":"https://github.com/Shabbir-Nuruddin/locallift-demo-videos/releases/download/v1/fitness-01-taedas-academy.mp4","maps":"https://www.google.com/maps/place/?q=place_id:ChIJpfI5CjAjDTkRb3PWBaew0QM","note":""},{"id":"fit-42","cat":"Fitness","batch":"Fitness & martial arts","name":"Physique First","contact":"ji","phone":"+919871394324","rating":"4.9","reviews":"590","area":"New Mata Mandir Rd, Rajiv Nagar","site":"https://physique-first-gurgaon.vercel.app","video":"https://github.com/Shabbir-Nuruddin/locallift-demo-videos/releases/download/v1/fitness-02-physique-first.mp4","maps":"https://www.google.com/maps/place/?q=place_id:ChIJ6VWeWrEZDTkRxXkoDVj21xQ","note":""},{"id":"fit-43","cat":"Fitness","batch":"Fitness & martial arts","name":"PS Fitness Gym","contact":"ji","phone":"+918178785135","rating":"5.0","reviews":"407","area":"1 817, Sector 12","site":"https://ps-fitness-gym-gurgaon.vercel.app","video":"https://github.com/Shabbir-Nuruddin/locallift-demo-videos/releases/download/v1/fitness-03-ps-fitness-gym.mp4","maps":"https://www.google.com/maps/place/?q=place_id:ChIJjaAQb8AZDTkRQWNCVStzLNE","note":""},{"id":"fit-44","cat":"Fitness","batch":"Fitness & martial arts","name":"Fitness Theory","contact":"ji","phone":"+919811126603","rating":"5.0","reviews":"451","area":"New Palam Vihar Phase 3, Sector 110","site":"https://fitness-theory.vercel.app","video":"https://github.com/Shabbir-Nuruddin/locallift-demo-videos/releases/download/v1/fitness-04-fitness-theory.mp4","maps":"https://www.google.com/maps/place/?q=place_id:ChIJ3RUOAUQZDTkRsCjzv6-i1mQ","note":""},{"id":"fit-45","cat":"Fitness","batch":"Fitness & martial arts","name":"Agastya Power Yoga","contact":"ji","phone":"+919810750200","rating":"5.0","reviews":"437","area":"Sector 1, Palam Vihar","site":"https://agastya-power-yoga.vercel.app","video":"https://github.com/Shabbir-Nuruddin/locallift-demo-videos/releases/download/v1/fitness-05-agastya-power-yoga.mp4","maps":"https://www.google.com/maps/place/?q=place_id:ChIJZb9sCBsZDTkRHRf6_g51_Z8","note":""},{"id":"fit-46","cat":"Fitness","batch":"Fitness & martial arts","name":"Peace Taekwondo Academy","contact":"ji","phone":"+919015991818","rating":"4.8","reviews":"394","area":"Darbaripur, Sector 70","site":"https://peace-taekwondo-academy.vercel.app","video":"https://github.com/Shabbir-Nuruddin/locallift-demo-videos/releases/download/v1/fitness-06-peace-taekwondo.mp4","maps":"https://www.google.com/maps/place/?q=place_id:ChIJq6qqWvXhDDkRsAVwL3606hM","note":""},{"id":"fit-47","cat":"Fitness","batch":"Fitness & martial arts","name":"Warriors Arts MMA Classes","contact":"ji","phone":"+919999505574","rating":"4.9","reviews":"295","area":"S-35/05","site":"https://warriors-arts-mma-classes.vercel.app","video":"https://github.com/Shabbir-Nuruddin/locallift-demo-videos/releases/download/v1/fitness-07-warriors-arts-mma.mp4","maps":"https://www.google.com/maps/place/?q=place_id:ChIJ29BSMDwZDTkR4O7pPyIMnCs","note":""},{"id":"fit-48","cat":"Fitness","batch":"Fitness & martial arts","name":"Max Pro Fitness MMA","contact":"ji","phone":"+918929875996","rating":"5.0","reviews":"312","area":"Sushant Lok Phase I, Sector 43","site":"https://max-pro-fitness-mma-gurgaon.vercel.app","video":"https://github.com/Shabbir-Nuruddin/locallift-demo-videos/releases/download/v1/fitness-08-max-pro-fitness-mma.mp4","maps":"https://www.google.com/maps/place/?q=place_id:ChIJrXdtwMMZDTkR8Wfyc0ahR14","note":""},{"id":"fit-49","cat":"Fitness","batch":"Fitness & martial arts","name":"Fit Club 89","contact":"ji","phone":"+917428522259","rating":"4.9","reviews":"467","area":"nearby Petal Apartments, Sector 89","site":"https://fit-club-89-gurgaon-sec-89-haryana.vercel.app","video":"https://github.com/Shabbir-Nuruddin/locallift-demo-videos/releases/download/v1/fitness-09-fit-club-89.mp4","maps":"https://www.google.com/maps/place/?q=place_id:ChIJYWIO3LAXDTkR61Cz4bMOlWk","note":""},{"id":"fit-50","cat":"Fitness","batch":"Fitness & martial arts","name":"The Hard Track Gym","contact":"ji","phone":"+918700411522","rating":"4.9","reviews":"258","area":"Noble Enclave, Palam Vihar Extension","site":"https://the-hard-track-gym.vercel.app","video":"https://github.com/Shabbir-Nuruddin/locallift-demo-videos/releases/download/v1/fitness-10-the-hard-track-gym.mp4","maps":"https://www.google.com/maps/place/?q=place_id:ChIJ-QJWYHAZDTkRBfWkdB-jpyk","note":""},{"id":"gym-51","cat":"Gym","batch":"Gyms · batch 2","name":"Empire Of Fitness","contact":"ji","phone":"+919355334444","rating":"4.7","reviews":"666","area":"DLF Phase 3, Sector 24","site":"https://empire-of-fitness-gurgaon.vercel.app","video":"https://github.com/Shabbir-Nuruddin/locallift-demo-videos/releases/download/v1/gyms2-01-empire-of-fitness.mp4","maps":"https://www.google.com/maps/place/?q=place_id:ChIJk2TSKo8ZDTkR3F8WrWYQlw0","note":""},{"id":"gym-52","cat":"Gym","batch":"Gyms · batch 2","name":"OXI Gym","contact":"ji","phone":"+919958340099","rating":"4.7","reviews":"426","area":"Carterpuri Village, Sector 23A","site":"https://oxi-gym-gurgaon.vercel.app","video":"https://github.com/Shabbir-Nuruddin/locallift-demo-videos/releases/download/v1/gyms2-02-oxi-gym.mp4","maps":"https://www.google.com/maps/place/?q=place_id:ChIJVVVVBY8ZDTkRCsx3-Sp51a4","note":""},{"id":"gym-53","cat":"Gym","batch":"Gyms · batch 2","name":"My Fitness Pro Gym","contact":"ji","phone":"+919999655909","rating":"4.9","reviews":"415","area":"Ardee City, Sector 52","site":"https://my-fitness-pro-gym.vercel.app","video":"https://github.com/Shabbir-Nuruddin/locallift-demo-videos/releases/download/v1/gyms2-03-my-fitness-pro-gym.mp4","maps":"https://www.google.com/maps/place/?q=place_id:ChIJm8Q6b7cjDTkRF_ticCK2Dhk","note":""},{"id":"gym-54","cat":"Gym","batch":"Gyms · batch 2","name":"The Track Gym","contact":"ji","phone":"+919711205050","rating":"4.6","reviews":"355","area":"Sushant Lok 2, Sector 57","site":"https://the-track-gym.vercel.app","video":"https://github.com/Shabbir-Nuruddin/locallift-demo-videos/releases/download/v1/gyms2-04-the-track-gym.mp4","maps":"https://www.google.com/maps/place/?q=place_id:ChIJfcD7cQciDTkR6yMsCn5NMPY","note":""},{"id":"gym-55","cat":"Gym","batch":"Gyms · batch 2","name":"DC Fitness Gym","contact":"ji","phone":"+919999513656","rating":"4.8","reviews":"336","area":"Sector 52, Bindapur","site":"https://dc-fitness-gym.vercel.app","video":"https://github.com/Shabbir-Nuruddin/locallift-demo-videos/releases/download/v1/gyms2-05-dc-fitness-gym.mp4","maps":"https://www.google.com/maps/place/?q=place_id:ChIJ7alwHegZDTkRiwHUo5jlVqI","note":"Google lists no opening hours; site asks visitors to call. Confirm timings on the call."},{"id":"gym-56","cat":"Gym","batch":"Gyms · batch 2","name":"Gym Beats Club","contact":"ji","phone":"+919717060588","rating":"4.9","reviews":"297","area":"Kanhai, Sector 45","site":"https://gym-beats-club.vercel.app","video":"https://github.com/Shabbir-Nuruddin/locallift-demo-videos/releases/download/v1/gyms2-06-gym-beats-club.mp4","maps":"https://www.google.com/maps/place/?q=place_id:ChIJ35MzmQYZDTkRSrB3d74lNJI","note":""},{"id":"gym-57","cat":"Gym","batch":"Gyms · batch 2","name":"Chetak Fitness Gym","contact":"ji","phone":"+919319544747","rating":"4.9","reviews":"288","area":"Parsvnath Exotica, Sector 53","site":"https://chetak-fitness-gym.vercel.app","video":"https://github.com/Shabbir-Nuruddin/locallift-demo-videos/releases/download/v1/gyms2-07-chetak-fitness-gym.mp4","maps":"https://www.google.com/maps/place/?q=place_id:ChIJfzYUjAcZDTkRKDKS8x7pdq0","note":""},{"id":"gym-58","cat":"Gym","batch":"Gyms · batch 2","name":"MJ Fitness Club","contact":"ji","phone":"+918448468700","rating":"4.9","reviews":"189","area":"Surya Vihar, Sector 9","site":"https://mj-fitness-club.vercel.app","video":"https://github.com/Shabbir-Nuruddin/locallift-demo-videos/releases/download/v1/gyms2-08-mj-fitness-club.mp4","maps":"https://www.google.com/maps/place/?q=place_id:ChIJdy4Gg54XDTkRnqcEjArTSVo","note":"Listing name says 'by Satbir'; Satbir is likely the owner. Confirm before using the name."},{"id":"gym-59","cat":"Gym","batch":"Gyms · batch 2","name":"Fitness Hero","contact":"ji","phone":"+919899144738","rating":"4.7","reviews":"295","area":"near Dominoz, Sector 9","site":"https://fitness-hero-gym-gurgaon.vercel.app","video":"https://github.com/Shabbir-Nuruddin/locallift-demo-videos/releases/download/v1/gyms2-09-fitness-hero-gym.mp4","maps":"https://www.google.com/maps/place/?q=place_id:ChIJD1i6RKsXDTkRfPF4DtcW8i0","note":""},{"id":"gym-60","cat":"Gym","batch":"Gyms · batch 2","name":"Energy Zone Gym","contact":"ji","phone":"+918587857531","rating":"4.8","reviews":"286","area":"behind Vita Dairy, Sector 38","site":"https://energy-zone-gym.vercel.app","video":"https://github.com/Shabbir-Nuruddin/locallift-demo-videos/releases/download/v1/gyms2-10-energy-zone-gym.mp4","maps":"https://www.google.com/maps/place/?q=place_id:ChIJhSFmam4YDTkRAIwNFZmscIQ","note":"Google lists no opening hours; site asks visitors to call. Confirm timings on the call."}];
+const KEY = "locallift-crm:v1";
+const STATUSES = [
+  ["new", "Not called"], ["no_answer", "No answer"], ["talked", "Talked"], ["follow_up", "Follow-up"],
+  ["interested", "Interested"], ["agreed", "Agreed"], ["paid", "Paid / live"], ["lost", "Said no"]
+];
+const SL = Object.fromEntries(STATUSES);
+const CATS = [["all", "All"], ["Plumber", "Plumbers"], ["Gym", "Gyms"], ["Fitness", "Fitness"], ["Restaurant", "Restaurants"], ["Other", "Other"]];
+const PKGS = {
+  basic: { name: "Basic", price: 5999, feats: ["domain", "hosting", "callwa", "maps"] },
+  growth: { name: "Growth", price: 8999, feats: ["domain", "hosting", "callwa", "maps", "gbp", "seo", "changes3"] },
+  premium: { name: "Premium", price: 12999, feats: ["domain", "hosting", "callwa", "maps", "gbp", "seo", "changes3", "updates1y", "pages", "priority"] },
+  custom: { name: "Custom", price: null, feats: [] }
+};
+const FEATS = [
+  ["domain", "Own .in/.com domain (1 yr)"], ["hosting", "Hosting (1 yr)"], ["callwa", "Call + WhatsApp buttons"],
+  ["maps", "Google Maps location"], ["gbp", "Google Business Profile setup"], ["seo", "Basic SEO"],
+  ["changes3", "3 months free changes"], ["updates1y", "1 year of updates"], ["pages", "Extra pages"],
+  ["priority", "Priority support"], ["renewal", "Renewal ₹3,999/yr agreed"]
+];
+const LOST = ["Already has a website", "Too expensive", "Not interested right now", "Doesn't need online customers", "Wrong number / not the owner", "Business closed", "Other"];
+
+const $ = (s, el = document) => el.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const today = () => new Date().toLocaleDateString("en-CA");
+const inr = n => "₹" + Number(n || 0).toLocaleString("en-IN");
+const digits = p => String(p || "").replace(/\D/g, "");
+const fmtPhone = p => { const d = digits(p); return d.length === 12 && d.startsWith("91") ? `+91 ${d.slice(2, 7)} ${d.slice(7)}` : p; };
+const stamp = () => new Date().toISOString();
+const fmtTime = iso => new Date(iso).toLocaleString("en-IN", { day: "numeric", month: "short", hour: "numeric", minute: "2-digit" });
+
+let db = load();
+function load() {
+  try { const d = JSON.parse(localStorage.getItem(KEY)); if (d && d.state) return d; } catch (e) {}
+  return { state: {}, custom: [] };
+}
+function save() {
+  try { localStorage.setItem(KEY, JSON.stringify(db)); } catch (e) { toast("Couldn't save in this browser. Use Backup to keep a copy."); }
+}
+const leads = () => SEED.concat(db.custom || []);
+const st = id => (db.state[id] ||= { status: "new", log: [] });
+const peek = id => db.state[id] || { status: "new", log: [] };
+function touch(id, fields, logText) {
+  const s = st(id); Object.assign(s, fields); s.updated = stamp();
+  if (logText) s.log.unshift({ t: s.updated, m: logText });
+  save();
+}
+
+const ui = { cat: "all", status: "", q: "", sort: "order", quick: "" };
+
+function icon(n) {
+  const P = {
+    site: '<path d="M2 8h12M8 2c1.8 1.7 2.6 3.7 2.6 6S9.8 12.3 8 14M8 2C6.2 3.7 5.4 5.7 5.4 8s.8 4.3 2.6 6" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" stroke-width="1.3"/>',
+    vid: '<path d="M8 2v8m0 0L4.8 6.8M8 10l3.2-3.2M3 13h10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>',
+    wa: '<path d="M8 1.8a6.2 6.2 0 0 0-5.3 9.4L2 14l2.9-.7A6.2 6.2 0 1 0 8 1.8Z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M6 5.6c.2-.4.6-.4.8 0l.4 1c.1.2 0 .4-.1.6l-.3.3c.4.8 1 1.4 1.8 1.8l.3-.3c.2-.1.4-.2.6-.1l1 .4c.4.2.4.6 0 .8-.5.6-1.3.8-2 .4A6 6 0 0 1 5.8 7.6c-.4-.7-.3-1.5.2-2Z" fill="currentColor"/>',
+    map: '<path d="M8 14.2s4.6-4.1 4.6-7.6a4.6 4.6 0 1 0-9.2 0c0 3.5 4.6 7.6 4.6 7.6Z" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="6.6" r="1.6" fill="none" stroke="currentColor" stroke-width="1.3"/>',
+    call: '<path d="M4.3 2.2h2l1 2.6-1.4 1a7 7 0 0 0 3.3 3.3l1-1.4 2.6 1v2a1.2 1.2 0 0 1-1.3 1.2A10.6 10.6 0 0 1 3.1 3.5a1.2 1.2 0 0 1 1.2-1.3Z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>'
+  };
+  return `<svg viewBox="0 0 16 16" aria-hidden="true">${P[n]}</svg>`;
+}
+function linkBtns(l, withCall) {
+  const d = digits(l.phone);
+  return `${withCall ? `<a class="lk" href="tel:+${d}">${icon("call")}Call</a>` : ""}
+    <a class="lk wa" href="https://wa.me/${d}" target="_blank" rel="noopener">${icon("wa")}WhatsApp</a>
+    ${l.site ? `<a class="lk" href="${esc(l.site)}" target="_blank" rel="noopener">${icon("site")}Site</a>` : ""}
+    ${l.video ? `<a class="lk vid" href="${esc(l.video)}" download>${icon("vid")}Video</a>` : ""}
+    ${l.maps ? `<a class="lk" href="${esc(l.maps)}" target="_blank" rel="noopener">${icon("map")}Maps</a>` : ""}`;
+}
+function statusSelect(id, s, cls = "st") {
+  return `<select class="${cls}" data-id="${id}" data-act="status" data-s="${s}" aria-label="Status">${STATUSES.map(([v, t]) => `<option value="${v}"${v === s ? " selected" : ""}>${t}</option>`).join("")}</select>`;
+}
+
+function filtered() {
+  const q = ui.q.trim().toLowerCase(), t = today();
+  let L = leads().filter(l => {
+    const s = peek(l.id);
+    if (ui.cat !== "all" && l.cat !== ui.cat) return false;
+    if (ui.status && s.status !== ui.status) return false;
+    if (ui.quick === "due" && !(s.follow && s.follow <= t && !["paid", "lost"].includes(s.status))) return false;
+    if (ui.quick === "open" && ["paid", "lost"].includes(s.status)) return false;
+    if (q && !`${l.name} ${l.area} ${l.phone} ${digits(l.phone)} ${l.contact} ${s.contact || ""} ${s.notes || ""} ${l.batch}`.toLowerCase().includes(q)) return false;
+    return true;
+  });
+  const idx = new Map(leads().map((l, i) => [l.id, i]));
+  if (ui.sort === "follow") L.sort((a, b) => (peek(a.id).follow || "9999").localeCompare(peek(b.id).follow || "9999"));
+  if (ui.sort === "reviews") L.sort((a, b) => (+b.reviews || 0) - (+a.reviews || 0));
+  if (ui.sort === "updated") L.sort((a, b) => (peek(b.id).updated || "").localeCompare(peek(a.id).updated || ""));
+  if (ui.sort === "order") L.sort((a, b) => idx.get(a.id) - idx.get(b.id));
+  return L;
+}
+
+function renderStats() {
+  const L = leads(), t = today();
+  const c = k => L.filter(l => peek(l.id).status === k).length;
+  const due = L.filter(l => { const s = peek(l.id); return s.follow && s.follow <= t && !["paid", "lost"].includes(s.status); }).length;
+  const called = L.filter(l => peek(l.id).called || peek(l.id).status !== "new").length;
+  const won = L.filter(l => ["agreed", "paid"].includes(peek(l.id).status));
+  const val = won.reduce((a, l) => a + (+peek(l.id).price || 0), 0);
+  const got = L.reduce((a, l) => a + (+peek(l.id).advance || 0), 0);
+  const cells = [
+    ["", `${called}/${L.length}`, "Called"],
+    ["new", c("new"), "Not called yet"],
+    ["due", due, "Follow-ups due"],
+    ["interested", c("interested"), "Interested"],
+    ["won", won.length, "Agreed / paid"],
+    ["lost", c("lost"), "Said no"],
+    ["money", inr(val), `Deal value · ${inr(got)} received`]
+  ];
+  $("#stats").innerHTML = cells.map(([k, v, s]) => {
+    const pressed = (k === "due" && ui.quick === "due") || (k && k !== "due" && k !== "won" && k !== "money" && ui.status === k);
+    return `<button class="stat${k === "money" ? " money" : ""}" data-stat="${k}" aria-pressed="${pressed}"><b>${v}</b><small>${s}</small></button>`;
+  }).join("");
+  $("#sub").textContent = `${L.length} businesses`;
+}
+function renderTabs() {
+  const L = leads();
+  $("#tabs").innerHTML = CATS.filter(([k]) => k === "all" || L.some(l => l.cat === k))
+    .map(([k, t]) => `<button class="tab" data-cat="${k}" aria-pressed="${ui.cat === k}">${t}<em>${k === "all" ? L.length : L.filter(l => l.cat === k).length}</em></button>`).join("");
+  $("#fStatus").innerHTML = `<option value="">All statuses</option>` + STATUSES.map(([v, t]) => `<option value="${v}"${ui.status === v ? " selected" : ""}>${t}</option>`).join("");
+}
+function renderList() {
+  const L = filtered(), t = today();
+  const head = `<div class="row head" role="row"><span title="Called">✓</span><span>Business</span><span>Phone</span><span>Links</span><span>Status</span><span>Follow-up</span><span></span></div>`;
+  if (!L.length) { $("#list").innerHTML = head + `<div class="empty">No leads match these filters.</div>`; return; }
+  $("#list").innerHTML = head + L.map(l => {
+    const s = peek(l.id), d = digits(l.phone);
+    const due = s.follow && s.follow <= t && !["paid", "lost"].includes(s.status);
+    const deal = ["agreed", "paid"].includes(s.status) && s.price ? `<span class="deal">${inr(s.price)}</span>` : "";
+    return `<div class="row${s.called ? " done" : ""}" role="row">
+      <input type="checkbox" class="chk" data-id="${l.id}" data-act="called" ${s.called ? "checked" : ""} aria-label="Called ${esc(l.name)}" title="Tick when called">
+      <div><button class="nm" data-open="${l.id}">${esc(l.name)}</button>
+        <div class="meta">${esc(l.cat)} · ${esc(l.area || "Gurugram")}${l.rating ? ` · <span class="star">★</span> ${esc(l.rating)} (${esc(l.reviews)})` : ""}</div></div>
+      <div><a class="ph" href="tel:+${d}">${esc(fmtPhone(l.phone))}</a><div class="who">${esc(s.contact || l.contact || "ji")}${deal ? " · " + deal : ""}</div></div>
+      <div class="links">${linkBtns(l, false)}</div>
+      <div>${statusSelect(l.id, s.status)}</div>
+      <div><input type="date" class="date${due ? " due" : ""}" data-id="${l.id}" data-act="follow" value="${esc(s.follow || "")}" aria-label="Follow-up date"></div>
+      <div><button class="open" data-open="${l.id}">Details</button></div>
+    </div>`;
+  }).join("");
+}
+function render() { renderStats(); renderTabs(); renderList(); if (openId) renderDrawer(); }
+
+/* drawer */
+let openId = null;
+function openDrawer(id) { openId = id; renderDrawer(); $("#drawer").classList.add("on"); $("#scrim").classList.add("on"); $("#drawer").setAttribute("aria-hidden", "false"); setTimeout(() => $("#drawer .x").focus(), 50); }
+function closeDrawer() { openId = null; $("#drawer").classList.remove("on"); $("#scrim").classList.remove("on"); $("#drawer").setAttribute("aria-hidden", "true"); }
+function renderDrawer() {
+  const l = leads().find(x => x.id === openId); if (!l) return closeDrawer();
+  const s = peek(l.id), feats = s.feats || [];
+  const isDeal = ["interested", "agreed", "paid"].includes(s.status), isLost = s.status === "lost";
+  const scroll = $("#drawer .db")?.scrollTop || 0;
+  $("#drawer").innerHTML = `
+  <div class="dh">
+    <button class="x" data-close aria-label="Close">×</button>
+    <h2 id="dName">${esc(l.name)}</h2>
+    <div class="meta">${esc(l.cat)} · ${esc(l.batch || "Added by you")} · ${esc(l.area || "Gurugram")}${l.rating ? ` · <span class="star">★</span> ${esc(l.rating)} (${esc(l.reviews)} reviews)` : ""}<br><b style="color:var(--ink)">${esc(fmtPhone(l.phone))}</b></div>
+    <div class="links">${linkBtns(l, true)}</div>
+  </div>
+  <div class="db">
+    ${l.note ? `<div class="sec"><h3>Research note</h3><div class="research">${esc(l.note)}</div></div>` : ""}
+    <div class="sec"><h3>Status</h3>
+      <div class="pills">${STATUSES.map(([v, t]) => `<button class="pill" data-s="${v}" data-id="${l.id}" data-act="pill" aria-pressed="${s.status === v}">${t}</button>`).join("")}</div>
+      <div class="grid2" style="margin-top:12px">
+        <label class="f"><span>Follow-up on</span><input type="date" class="in" data-id="${l.id}" data-act="follow" value="${esc(s.follow || "")}"></label>
+        <label class="f"><span>Person you spoke to</span><input class="in" data-id="${l.id}" data-act="contact" value="${esc(s.contact || "")}" placeholder="${esc(l.contact || "ji")}"></label>
+      </div>
+      <label class="f" style="margin-top:10px;display:flex;gap:8px;align-items:center"><input type="checkbox" class="chk" data-id="${l.id}" data-act="called" ${s.called ? "checked" : ""}> Called</label>
+    </div>
+    <div class="sec"><h3>Log a call</h3>
+      <div class="quick">
+        <button class="qb" data-id="${l.id}" data-q="no_answer">No answer</button>
+        <button class="qb" data-id="${l.id}" data-q="busy">Busy, call later</button>
+        <button class="qb" data-id="${l.id}" data-q="talked">Talked</button>
+        <button class="qb" data-id="${l.id}" data-q="video">Sent video on WhatsApp</button>
+        <button class="qb" data-id="${l.id}" data-q="interested">Interested</button>
+      </div>
+      <div class="addlog"><input class="in" id="logIn" placeholder="What happened? (Enter to add)"><button class="btn ghost" data-id="${l.id}" data-act="addlog">Add</button></div>
+      <ul class="log">${(s.log || []).map(e => `<li><time>${esc(fmtTime(e.t))}</time><span>${esc(e.m)}</span></li>`).join("") || `<li><time></time><span class="hint">No activity yet.</span></li>`}</ul>
+    </div>
+    <div class="sec${isDeal ? "" : " hide"}" id="dealSec"><h3>Deal</h3>
+      <div class="pkgs">${Object.entries(PKGS).map(([k, p]) => `<button class="pkg" data-id="${l.id}" data-pkg="${k}" aria-pressed="${s.pkg === k}"><b>${p.name}</b>${p.price ? inr(p.price) : "Your price"}</button>`).join("")}</div>
+      <div class="grid2">
+        <label class="f"><span>Price agreed (₹)</span><input class="in" type="number" min="0" step="100" data-id="${l.id}" data-act="price" value="${esc(s.price ?? "")}"></label>
+        <label class="f"><span>Advance / paid so far (₹)</span><input class="in" type="number" min="0" step="100" data-id="${l.id}" data-act="advance" value="${esc(s.advance ?? "")}"></label>
+        <label class="f"><span>Domain</span><input class="in" data-id="${l.id}" data-act="domain" value="${esc(s.domain || "")}" placeholder="name.in"></label>
+        <label class="f"><span>Go-live date</span><input class="in" type="date" data-id="${l.id}" data-act="live" value="${esc(s.live || "")}"></label>
+      </div>
+      <h3 style="margin-top:14px">What we're giving them</h3>
+      <div class="feats">${FEATS.map(([k, t]) => `<label><input type="checkbox" data-id="${l.id}" data-feat="${k}" ${feats.includes(k) ? "checked" : ""}>${t}</label>`).join("")}</div>
+      <label class="f"><span>Extra things promised</span><input class="in" data-id="${l.id}" data-act="extras" value="${esc(s.extras || "")}" placeholder="e.g. Hindi menu page, 2 extra photo shoots"></label>
+    </div>
+    <div class="sec${isLost ? "" : " hide"}"><h3>Why they said no</h3>
+      <select class="in" data-id="${l.id}" data-act="lostWhy"><option value="">Pick a reason</option>${LOST.map(r => `<option${s.lostWhy === r ? " selected" : ""}>${r}</option>`).join("")}</select>
+      <label class="f" style="margin-top:8px"><span>Try again later?</span><input type="date" class="in" data-id="${l.id}" data-act="follow" value="${esc(s.follow || "")}"></label>
+    </div>
+    <div class="sec"><h3>Notes</h3>
+      <textarea class="in" data-id="${l.id}" data-act="notes" placeholder="Owner's name, best time to call, what they liked, objections…">${esc(s.notes || "")}</textarea>
+    </div>
+    <div class="sec">
+      ${l.id.startsWith("c-") ? `<button class="btn danger" data-id="${l.id}" data-act="del">Remove this lead</button>` : ""}
+      <button class="btn ghost" data-id="${l.id}" data-act="reset">Reset progress for this lead</button>
+    </div>
+  </div>`;
+  $("#drawer .db").scrollTop = scroll;
+}
+
+/* events */
+const QUICK = {
+  no_answer: ["no_answer", "Called, no answer"], busy: ["follow_up", "Busy, asked to call later"], talked: ["talked", "Talked on call"],
+  video: [null, "Sent demo video on WhatsApp"], interested: ["interested", "Interested"]
+};
+function setStatus(id, v) {
+  const s = peek(id); if (s.status === v) return;
+  const f = { status: v };
+  if (v !== "new") f.called = true;
+  touch(id, f, `Status → ${SL[v]}`);
+  if (v === "follow_up" && !peek(id).follow) { const d = new Date(); d.setDate(d.getDate() + 2); touch(id, { follow: d.toLocaleDateString("en-CA") }); }
+  render();
+}
+document.addEventListener("click", e => {
+  const t = e.target.closest("[data-open],[data-close],[data-cat],[data-stat],.pill,[data-pkg],[data-q],[data-act=addlog],[data-act=del],[data-act=reset]");
+  if (!t) return;
+  if (t.dataset.open) return openDrawer(t.dataset.open);
+  if (t.hasAttribute("data-close")) return closeDrawer();
+  if (t.dataset.cat) { ui.cat = t.dataset.cat; return render(); }
+  if (t.dataset.stat !== undefined) {
+    const k = t.dataset.stat;
+    if (k === "due") { ui.quick = ui.quick === "due" ? "" : "due"; ui.status = ""; }
+    else if (k === "won") { ui.status = ui.status === "agreed" ? "" : "agreed"; ui.quick = ""; }
+    else if (k === "money" || k === "") { ui.status = ""; ui.quick = ""; }
+    else { ui.status = ui.status === k ? "" : k; ui.quick = ""; }
+    return render();
+  }
+  const id = t.dataset.id;
+  if (t.classList.contains("pill")) return setStatus(id, t.dataset.s);
+  if (t.dataset.pkg) {
+    const p = PKGS[t.dataset.pkg], s = peek(id);
+    touch(id, { pkg: t.dataset.pkg, price: p.price ?? s.price, feats: p.feats.length ? [...p.feats, ...((s.feats || []).includes("renewal") ? ["renewal"] : [])] : (s.feats || []) }, `Package → ${p.name}${p.price ? " " + inr(p.price) : ""}`);
+    return render();
+  }
+  if (t.dataset.q) {
+    const [q, m] = QUICK[t.dataset.q];
+    // quick logs only move early-stage leads; they never pull back an interested/agreed/paid/lost lead
+    const v = q && ["new", "no_answer", "talked", "follow_up"].includes(peek(id).status) ? q : null;
+    touch(id, { called: true, ...(v ? { status: v } : {}) }, m);
+    if (v === "follow_up" && !peek(id).follow) { const d = new Date(); d.setDate(d.getDate() + 1); touch(id, { follow: d.toLocaleDateString("en-CA") }); }
+    return render();
+  }
+  if (t.dataset.act === "addlog") { const v = $("#logIn").value.trim(); if (v) { touch(id, {}, v); render(); $("#logIn").focus(); } return; }
+  if (t.dataset.act === "reset") { if (confirm("Clear status, notes and deal details for this lead?")) { delete db.state[id]; save(); render(); } return; }
+  if (t.dataset.act === "del") { if (confirm("Remove this lead you added?")) { db.custom = db.custom.filter(x => x.id !== id); delete db.state[id]; save(); closeDrawer(); render(); } return; }
+});
+document.addEventListener("change", e => {
+  const t = e.target, id = t.dataset.id; if (!id) return;
+  const a = t.dataset.act;
+  if (a === "status") return setStatus(id, t.value);
+  if (a === "called") { touch(id, { called: t.checked }, t.checked ? "Marked as called" : "Unmarked called"); return render(); }
+  if (a === "follow") { touch(id, { follow: t.value }, t.value ? `Follow-up set for ${new Date(t.value + "T00:00").toLocaleDateString("en-IN", { day: "numeric", month: "short" })}` : "Follow-up cleared"); return render(); }
+  if (t.dataset.feat) { const s = st(id), f = new Set(s.feats || []); t.checked ? f.add(t.dataset.feat) : f.delete(t.dataset.feat); touch(id, { feats: [...f] }); return renderStats(); }
+  if (a === "lostWhy") { touch(id, { lostWhy: t.value }, t.value ? `Reason: ${t.value}` : ""); return renderStats(); }
+  if (["price", "advance", "domain", "live", "contact", "extras", "notes"].includes(a)) {
+    touch(id, { [a]: t.type === "number" ? (t.value === "" ? "" : +t.value) : t.value }, a === "price" && t.value ? `Price → ${inr(t.value)}` : a === "advance" && t.value ? `Received → ${inr(t.value)}` : "");
+    renderStats(); renderList();
+  }
+});
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape" && openId && !document.querySelector("dialog[open]")) closeDrawer();
+  if (e.key === "Enter" && e.target.id === "logIn") { e.preventDefault(); $("[data-act=addlog]").click(); }
+});
+$("#scrim").onclick = closeDrawer;
+$("#q").oninput = e => { ui.q = e.target.value; renderList(); };
+$("#fStatus").onchange = e => { ui.status = e.target.value; ui.quick = ""; render(); };
+$("#sort").onchange = e => { ui.sort = e.target.value; renderList(); };
+
+/* add lead */
+$("#bAdd").onclick = () => { $("#fAdd").reset(); $("#dlgAdd").showModal(); };
+$("#fAdd").addEventListener("submit", e => {
+  if (e.submitter?.value !== "ok") return;
+  const f = Object.fromEntries(new FormData(e.target));
+  const [rating, reviews] = (f.rr || "").split("/").map(x => x.trim());
+  let d = digits(f.phone); if (d.length === 10) d = "91" + d;
+  const l = { id: "c-" + Date.now().toString(36), cat: f.cat, batch: "Added by you", name: f.name.trim(), contact: f.contact.trim() || "ji",
+    phone: "+" + d, rating: rating || "", reviews: (reviews || "").replace(/\D/g, ""), area: f.area.trim(), site: f.site.trim(), video: f.video.trim(),
+    maps: "https://www.google.com/maps/search/" + encodeURIComponent(f.name + " " + (f.area || "Gurugram")), note: "" };
+  (db.custom ||= []).push(l); touch(l.id, {}, "Lead added"); render(); toast("Lead added");
+});
+
+/* backup / restore / csv */
+function download(name, text, type) {
+  const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([text], { type })); a.download = name; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+}
+$("#bExp").onclick = () => { download(`locallift-crm-backup-${today()}.json`, JSON.stringify({ ...db, exported: stamp() }, null, 1), "application/json"); toast("Backup downloaded"); };
+$("#bImp").onclick = () => $("#fImp").click();
+$("#fImp").onchange = async e => {
+  const f = e.target.files[0]; if (!f) return;
+  try {
+    const d = JSON.parse(await f.text()); if (!d.state) throw 0;
+    if (!confirm("Replace the progress in this browser with the backup file?")) return;
+    db = { state: d.state, custom: d.custom || [] }; save(); render(); toast("Backup restored");
+  } catch (err) { toast("That file isn't a LocalLift backup"); }
+  e.target.value = "";
+};
+$("#bCsv").onclick = () => {
+  const cols = ["Business", "Category", "Area", "Phone", "Contact", "Rating", "Reviews", "Status", "Called", "Follow-up", "Package", "Price", "Received", "Features", "Extras", "Reason for no", "Notes", "Website", "Video", "Last update"];
+  const q = v => `"${String(v ?? "").replace(/"/g, '""')}"`;
+  const rows = leads().map(l => { const s = peek(l.id); return [l.name, l.cat, l.area, fmtPhone(l.phone), s.contact || l.contact, l.rating, l.reviews, SL[s.status], s.called ? "Yes" : "", s.follow || "", PKGS[s.pkg]?.name || "", s.price ?? "", s.advance ?? "", (s.feats || []).map(k => FEATS.find(f => f[0] === k)?.[1]).join("; "), s.extras || "", s.lostWhy || "", s.notes || "", l.site, l.video, s.updated ? fmtTime(s.updated) : ""].map(q).join(","); });
+  download(`locallift-leads-${today()}.csv`, "﻿" + [cols.map(q).join(","), ...rows].join("\r\n"), "text/csv"); toast("CSV downloaded");
+};
+let tt; function toast(m) { const el = $("#toast"); el.textContent = m; el.classList.add("on"); clearTimeout(tt); tt = setTimeout(() => el.classList.remove("on"), 2200); }
+
+render();
+</script>
+</body>
+</html>
