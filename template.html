@@ -148,6 +148,64 @@ dialog .grid2{margin-bottom:10px}
 dialog .acts{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}
 .foot{color:var(--ink-3);font-size:12.5px;margin:16px 0 40px}
 
+
+/* guide + next call */
+.guide{display:flex;gap:18px;align-items:flex-start;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:14px 18px;margin-top:18px}
+.guide ol{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;padding:0;list-style:none;counter-reset:g;flex:1}
+.guide li{counter-increment:g;font-size:14px;color:var(--ink-2);display:flex;gap:10px}
+.guide li::before{content:counter(g);flex:none;width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;font-weight:700;font-size:13px;display:grid;place-items:center}
+.guide li b{color:var(--ink)}
+.next{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);background:var(--panel);border:2px solid var(--ink);border-radius:14px;margin:18px 0 0;overflow:hidden}
+.nx-l{padding:20px 22px}
+.nx-r{padding:20px 22px;background:#fafaf8;border-left:1px solid var(--line)}
+.nx-k{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);font-weight:700;margin-bottom:6px}
+.why{letter-spacing:0;text-transform:none;font-size:12.5px;padding:2px 9px;border-radius:999px;background:var(--s-new);color:var(--s-new-i)}
+.why.due{background:var(--s-na);color:var(--s-na-i)}
+.next h2{font-size:24px;letter-spacing:-.02em;line-height:1.2;cursor:pointer}
+.next h2:hover{text-decoration:underline;text-underline-offset:4px}
+.next .meta{white-space:normal;font-size:14px;margin-top:4px}
+.nx-note{font-size:13.5px;color:var(--ink-2);margin-top:10px;max-width:70ch;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.nx-acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.big{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line-2);background:var(--panel);border-radius:10px;padding:10px 15px;font-size:15px;font-weight:600;text-decoration:none;color:var(--ink)}
+.big svg{width:16px;height:16px}
+.big:hover{border-color:var(--ink)}
+.big.call{background:var(--accent);border-color:var(--accent);color:#fff;font-size:16px;padding:10px 20px}
+.big.call:hover{background:#0f4f27}
+.big.wa{border-color:#bfe3c9;color:#166534;background:#f2faf4}
+.big.vid{background:var(--ink);border-color:var(--ink);color:#fff}
+.nx-r h3,.outbox h3{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);margin-bottom:10px;font-weight:600}
+.outs{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.out{border:1px solid var(--line-2);background:var(--panel);border-radius:10px;padding:10px 12px;font-size:14px;font-weight:600;text-align:left;line-height:1.3}
+.out small{display:block;font-weight:400;color:var(--ink-3);font-size:12.5px;margin-top:2px}
+.out:hover{border-color:var(--ink)}
+.out[data-out="interested"]{border-color:#a9dcd6}
+.out[data-out="agreed"]{border-color:#9fd3ad;background:#f2faf4}
+.out[data-out="lost"]{border-color:#efc9c4}
+.later{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;padding:10px;border-radius:10px;background:var(--s-fu);align-items:center}
+.later span{font-size:13px;color:var(--s-fu-i);font-weight:600;margin-right:4px}
+.later button{border:1px solid #cdb8ef;background:var(--panel);border-radius:8px;padding:6px 10px;font-size:13px}
+.later button:hover{border-color:var(--s-fu-i)}
+.skip{margin-top:12px;border:0;background:none;color:var(--ink-3);font-size:13px;text-decoration:underline;text-underline-offset:3px;padding:0}
+.done-all{padding:22px;font-size:15px;color:var(--ink-2)}
+.done-all b{color:var(--ink);font-size:18px;display:block;margin-bottom:4px}
+.nstep{display:block;font-size:12px;color:var(--ink-3);margin-top:5px;padding-left:2px}
+.nstep.due{color:#8a5300;font-weight:700}
+.nstep.go{color:var(--accent);font-weight:600}
+.row.isdue{box-shadow:inset 3px 0 0 #d97706}
+.toast.act{pointer-events:auto}
+.toast button{margin-left:12px;background:none;border:0;color:#9fe0b0;font-weight:700;text-decoration:underline;text-underline-offset:3px;padding:0}
+@media (max-width:900px){
+  .next{grid-template-columns:1fr}
+  .nx-r{border-left:0;border-top:1px solid var(--line)}
+  .guide ol{grid-template-columns:1fr}
+}
+@media (max-width:640px){
+  .nx-l,.nx-r{padding:16px}
+  .next h2{font-size:21px}
+  .big{flex:1 1 auto;justify-content:center}
+  .guide{padding:12px 14px}
+}
+
 @media (max-width:1100px){
   .stats{grid-template-columns:repeat(4,minmax(0,1fr))}
   .row{grid-template-columns:30px minmax(0,1fr) minmax(0,1fr);grid-template-areas:"c n n" "c p l" "c s d" "c o o";row-gap:10px}
@@ -189,12 +247,22 @@ dialog .acts{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}
 </header>
 
 <main class="wrap">
+  <div class="guide hide" id="guide">
+    <ol>
+      <li><span><b>Call the business in the black box.</b> It always shows who to call next: follow-ups that are due first, then people you haven't called.</span></li>
+      <li><span><b>Tap what happened.</b> The status and the next call date are set for you. Tapped the wrong one? Hit Undo.</span></li>
+      <li><span><b>Send the demo.</b> "WhatsApp demo" opens a ready message with their site link. If they agree, fill in the package and price.</span></li>
+    </ol>
+    <button class="btn ghost" id="gotIt">Got it</button>
+  </div>
+  <section class="next" id="next" aria-label="Next call"></section>
   <div class="stats" id="stats"></div>
   <div class="bar">
     <div class="tabs" id="tabs"></div>
     <div class="search"><input id="q" type="search" placeholder="Search name, area, phone, notes…" aria-label="Search leads"></div>
     <select class="sel" id="fStatus" aria-label="Filter by status"></select>
     <select class="sel" id="sort" aria-label="Sort">
+      <option value="next">Sort: who to call next</option>
       <option value="order">Sort: original order</option>
       <option value="follow">Sort: follow-up date</option>
       <option value="reviews">Sort: most reviews</option>
@@ -202,7 +270,7 @@ dialog .acts{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}
     </select>
   </div>
   <div class="list" id="list" role="table" aria-label="Leads"></div>
-  <p class="foot">Your progress saves automatically in this browser. Use <b>Backup</b> to download a file, and <b>Restore</b> to load it on another computer or browser. Videos download from GitHub when you click <b>Video</b>.</p>
+  <p class="foot"><button class="skip" id="showGuide" style="margin:0 0 6px">How does this work?</button><br>Your progress saves automatically in this browser. Use <b>Backup</b> to download a file, and <b>Restore</b> to load it on another computer or browser. Videos download from GitHub when you click <b>Video</b>.</p>
 </main>
 
 <div class="scrim" id="scrim"></div>
@@ -275,7 +343,8 @@ function touch(id, fields, logText) {
   save();
 }
 
-const ui = { cat: "all", status: "", q: "", sort: "order", quick: "" };
+const ui = { cat: "all", status: "", q: "", sort: "next", quick: "" };
+const skipped = new Set();
 
 function icon(n) {
   const P = {
@@ -292,7 +361,7 @@ function linkBtns(l, withCall) {
   return `${withCall ? `<a class="lk" href="tel:+${d}">${icon("call")}Call</a>` : ""}
     <a class="lk wa" href="https://wa.me/${d}" target="_blank" rel="noopener">${icon("wa")}WhatsApp</a>
     ${l.site ? `<a class="lk" href="${esc(l.site)}" target="_blank" rel="noopener">${icon("site")}Site</a>` : ""}
-    ${l.video ? `<a class="lk vid" href="${esc(l.video)}" download>${icon("vid")}Video</a>` : ""}
+    ${l.video ? `<a class="lk vid" href="${esc(l.video)}" download title="Download the demo video">${icon("vid")}Video</a>` : ""}
     ${l.maps ? `<a class="lk" href="${esc(l.maps)}" target="_blank" rel="noopener">${icon("map")}Maps</a>` : ""}`;
 }
 function statusSelect(id, s, cls = "st") {
@@ -315,6 +384,7 @@ function filtered() {
   if (ui.sort === "reviews") L.sort((a, b) => (+b.reviews || 0) - (+a.reviews || 0));
   if (ui.sort === "updated") L.sort((a, b) => (peek(b.id).updated || "").localeCompare(peek(a.id).updated || ""));
   if (ui.sort === "order") L.sort((a, b) => idx.get(a.id) - idx.get(b.id));
+  if (ui.sort === "next") L.sort((a, b) => prio(a, idx) - prio(b, idx));
   return L;
 }
 
@@ -328,8 +398,8 @@ function renderStats() {
   const got = L.reduce((a, l) => a + (+peek(l.id).advance || 0), 0);
   const cells = [
     ["", `${called}/${L.length}`, "Called"],
-    ["new", c("new"), "Not called yet"],
-    ["due", due, "Follow-ups due"],
+    ["new", c("new"), "To call"],
+    ["due", due, "Follow-ups due today"],
     ["interested", c("interested"), "Interested"],
     ["won", won.length, "Agreed / paid"],
     ["lost", c("lost"), "Said no"],
@@ -355,19 +425,20 @@ function renderList() {
     const s = peek(l.id), d = digits(l.phone);
     const due = s.follow && s.follow <= t && !["paid", "lost"].includes(s.status);
     const deal = ["agreed", "paid"].includes(s.status) && s.price ? `<span class="deal">${inr(s.price)}</span>` : "";
-    return `<div class="row${s.called ? " done" : ""}" role="row">
+    const ns = nextStep(s);
+    return `<div class="row${s.called ? " done" : ""}${due ? " isdue" : ""}" role="row">
       <input type="checkbox" class="chk" data-id="${l.id}" data-act="called" ${s.called ? "checked" : ""} aria-label="Called ${esc(l.name)}" title="Tick when called">
       <div><button class="nm" data-open="${l.id}">${esc(l.name)}</button>
         <div class="meta">${esc(l.cat)} · ${esc(l.area || "Gurugram")}${l.rating ? ` · <span class="star">★</span> ${esc(l.rating)} (${esc(l.reviews)})` : ""}</div></div>
       <div><a class="ph" href="tel:+${d}">${esc(fmtPhone(l.phone))}</a><div class="who">${esc(s.contact || l.contact || "ji")}${deal ? " · " + deal : ""}</div></div>
       <div class="links">${linkBtns(l, false)}</div>
-      <div>${statusSelect(l.id, s.status)}</div>
+      <div>${statusSelect(l.id, s.status)}<span class="nstep ${ns[1]}">${ns[0]}</span></div>
       <div><input type="date" class="date${due ? " due" : ""}" data-id="${l.id}" data-act="follow" value="${esc(s.follow || "")}" aria-label="Follow-up date"></div>
       <div><button class="open" data-open="${l.id}">Details</button></div>
     </div>`;
   }).join("");
 }
-function render() { renderStats(); renderTabs(); renderList(); if (openId) renderDrawer(); }
+function render() { renderNext(); renderStats(); renderTabs(); renderList(); if (openId) renderDrawer(); }
 
 /* drawer */
 let openId = null;
@@ -383,7 +454,7 @@ function renderDrawer() {
     <button class="x" data-close aria-label="Close">×</button>
     <h2 id="dName">${esc(l.name)}</h2>
     <div class="meta">${esc(l.cat)} · ${esc(l.batch || "Added by you")} · ${esc(l.area || "Gurugram")}${l.rating ? ` · <span class="star">★</span> ${esc(l.rating)} (${esc(l.reviews)} reviews)` : ""}<br><b style="color:var(--ink)">${esc(fmtPhone(l.phone))}</b></div>
-    <div class="links">${linkBtns(l, true)}</div>
+    <div class="links">${linkBtns(l, true)}<a class="lk wa" href="${waLink(l)}" target="_blank" rel="noopener">${icon("wa")}WhatsApp demo</a><a class="lk" href="${scriptLink(l)}" target="_blank" rel="noopener">Call script</a></div>
   </div>
   <div class="db">
     ${l.note ? `<div class="sec"><h3>Research note</h3><div class="research">${esc(l.note)}</div></div>` : ""}
@@ -395,15 +466,9 @@ function renderDrawer() {
       </div>
       <label class="f" style="margin-top:10px;display:flex;gap:8px;align-items:center"><input type="checkbox" class="chk" data-id="${l.id}" data-act="called" ${s.called ? "checked" : ""}> Called</label>
     </div>
-    <div class="sec"><h3>Log a call</h3>
-      <div class="quick">
-        <button class="qb" data-id="${l.id}" data-q="no_answer">No answer</button>
-        <button class="qb" data-id="${l.id}" data-q="busy">Busy, call later</button>
-        <button class="qb" data-id="${l.id}" data-q="talked">Talked</button>
-        <button class="qb" data-id="${l.id}" data-q="video">Sent video on WhatsApp</button>
-        <button class="qb" data-id="${l.id}" data-q="interested">Interested</button>
-      </div>
-      <div class="addlog"><input class="in" id="logIn" placeholder="What happened? (Enter to add)"><button class="btn ghost" data-id="${l.id}" data-act="addlog">Add</button></div>
+    <div class="sec"><h3>What happened on the call?</h3>
+      <div class="outbox" style="margin-bottom:12px">${outcomeBtns(l.id)}</div>
+      <div class="addlog"><input class="in" id="logIn" placeholder="Add a note to the history (Enter to add)"><button class="btn ghost" data-id="${l.id}" data-act="addlog">Add</button></div>
       <ul class="log">${(s.log || []).map(e => `<li><time>${esc(fmtTime(e.t))}</time><span>${esc(e.m)}</span></li>`).join("") || `<li><time></time><span class="hint">No activity yet.</span></li>`}</ul>
     </div>
     <div class="sec${isDeal ? "" : " hide"}" id="dealSec"><h3>Deal</h3>
@@ -535,7 +600,114 @@ $("#bCsv").onclick = () => {
   const rows = leads().map(l => { const s = peek(l.id); return [l.name, l.cat, l.area, fmtPhone(l.phone), s.contact || l.contact, l.rating, l.reviews, SL[s.status], s.called ? "Yes" : "", s.follow || "", PKGS[s.pkg]?.name || "", s.price ?? "", s.advance ?? "", (s.feats || []).map(k => FEATS.find(f => f[0] === k)?.[1]).join("; "), s.extras || "", s.lostWhy || "", s.notes || "", l.site, l.video, s.updated ? fmtTime(s.updated) : ""].map(q).join(","); });
   download(`locallift-leads-${today()}.csv`, "﻿" + [cols.map(q).join(","), ...rows].join("\r\n"), "text/csv"); toast("CSV downloaded");
 };
-let tt; function toast(m) { const el = $("#toast"); el.textContent = m; el.classList.add("on"); clearTimeout(tt); tt = setTimeout(() => el.classList.remove("on"), 2200); }
+let tt; function toast(m, undo) {
+  const el = $("#toast"); el.textContent = m; el.classList.toggle("act", !!undo);
+  if (undo) { const u = document.createElement("button"); u.textContent = "Undo"; u.onclick = () => { undo(); el.classList.remove("on", "act"); toastMsg("Undone"); }; el.appendChild(u); }
+  el.classList.add("on"); clearTimeout(tt); tt = setTimeout(() => el.classList.remove("on", "act"), undo ? 6000 : 2200);
+}
+const toastMsg = m => toast(m);
+/* who to call next, and what each lead needs */
+const plus = n => { const d = new Date(); d.setDate(d.getDate() + n); return d.toLocaleDateString("en-CA"); };
+const fmtDay = v => { const t = today(); if (v === t) return "today"; if (v === plus(1)) return "tomorrow"; return new Date(v + "T00:00").toLocaleDateString("en-IN", { day: "numeric", month: "short" }); };
+const CLOSED = ["agreed", "paid", "lost"];
+function prio(l, idx) {
+  const s = peek(l.id), t = today(), i = idx.get(l.id) / 1000;
+  if (!CLOSED.includes(s.status) && s.follow && s.follow <= t) return 0 + (s.follow < t ? 0 : .5) + i / 10;
+  if (s.status === "new" && !s.follow) return 1 + i;
+  if (!CLOSED.includes(s.status) && !s.follow) return 2 + i;
+  if (!CLOSED.includes(s.status)) return 3 + Number(s.follow.replace(/-/g, "")) / 1e9;
+  return s.status === "agreed" ? 4 + i : 5 + i;
+}
+function queue() {
+  const t = today(), idx = new Map(leads().map((l, i) => [l.id, i]));
+  return leads().filter(l => { const s = peek(l.id); return !CLOSED.includes(s.status) && (!s.follow || s.follow <= t) && !skipped.has(l.id); })
+    .sort((a, b) => prio(a, idx) - prio(b, idx));
+}
+function nextStep(s) {
+  const t = today();
+  if (s.status === "paid") return ["Live. Remind renewal in a year", ""];
+  if (s.status === "agreed") return ["Build site, collect the balance", "go"];
+  if (s.status === "lost") return [s.follow ? `Maybe try again ${fmtDay(s.follow)}` : "Closed", ""];
+  if (s.follow && s.follow < t) return [`Overdue since ${fmtDay(s.follow)}`, "due"];
+  if (s.follow === t) return ["Call today", "due"];
+  if (s.follow) return [`Call ${fmtDay(s.follow)}`, ""];
+  if (s.status === "new") return ["Call now", "go"];
+  return ["Set a next call date", "due"];
+}
+function waLink(l) {
+  const c = l.contact && l.contact !== "ji" ? l.contact : "ji";
+  const m = `Namaste ${c}, main LocalLift se. ${l.name} ke liye maine ek website ka demo banaya hai, aapki photos aur Google reviews ke saath:\n${l.site || ""}${l.video ? `\n\n30 second ka video: ${l.video}` : ""}\n\nPasand aaye toh bataiye, 10 minute mein sab samjha doonga. Na pasand aaye toh bhi koi baat nahi 🙏`;
+  return `https://wa.me/${digits(l.phone)}?text=${encodeURIComponent(m)}`;
+}
+const scriptLink = l => `https://locallift-call-script.vercel.app/?lead=${encodeURIComponent(l.id)}`;
+function outcomeBtns(id) {
+  return `<h3>What happened?</h3><div class="outs">
+    <button class="out" data-id="${id}" data-out="no_answer">No answer<small>Try again tomorrow</small></button>
+    <button class="out" data-id="${id}" data-out="later">Call back later<small>Pick a day</small></button>
+    <button class="out" data-id="${id}" data-out="video">Sent site + video<small>Follow up in 2 days</small></button>
+    <button class="out" data-id="${id}" data-out="interested">Interested<small>Call tomorrow to close</small></button>
+    <button class="out" data-id="${id}" data-out="agreed">Agreed<small>Fill in package and price</small></button>
+    <button class="out" data-id="${id}" data-out="lost">Said no<small>Pick the reason</small></button>
+  </div>
+  <div class="later hide"><span>Call back:</span>
+    <button data-id="${id}" data-later="0">Later today</button><button data-id="${id}" data-later="1">Tomorrow</button>
+    <button data-id="${id}" data-later="3">In 3 days</button><button data-id="${id}" data-later="7">Next week</button></div>`;
+}
+function renderNext() {
+  const q = queue(), el = $("#next");
+  if (!q.length) {
+    const up = leads().map(l => [l, peek(l.id)]).filter(([, s]) => !CLOSED.includes(s.status) && s.follow).sort((a, b) => a[1].follow.localeCompare(b[1].follow))[0];
+    el.innerHTML = `<div class="done-all"><b>All caught up.</b>${up ? `Next call: ${esc(up[0].name)}, ${fmtDay(up[1].follow)}.` : "Nothing left to call."}${skipped.size ? ` <button class="skip" data-unskip>Show the ${skipped.size} you skipped</button>` : ""}</div>`;
+    return;
+  }
+  const l = q[0], s = peek(l.id), d = digits(l.phone), t = today();
+  const why = s.follow && s.follow < t ? [`Overdue since ${fmtDay(s.follow)}`, "due"] : s.follow === t ? ["Follow-up due today", "due"] : s.status === "new" ? ["Not called yet", ""] : [`${SL[s.status]}, no next date set`, "due"];
+  el.innerHTML = `
+  <div class="nx-l">
+    <div class="nx-k">Next call · ${q.length} in the queue <span class="why ${why[1]}">${why[0]}</span></div>
+    <h2 data-open="${l.id}" title="Open details">${esc(l.name)}</h2>
+    <div class="meta">${esc(l.cat)} · ${esc(l.area || "Gurugram")}${l.rating ? ` · <span class="star">★</span> ${esc(l.rating)} (${esc(l.reviews)} reviews)` : ""} · ask for <b style="color:var(--ink)">${esc(s.contact || l.contact || "the owner")}</b></div>
+    ${(s.log || [])[0] ? `<div class="nx-note"><b>Last time:</b> ${esc(s.log[0].m)} (${esc(fmtTime(s.log[0].t))})</div>` : l.note ? `<div class="nx-note">${esc(l.note)}</div>` : ""}
+    <div class="nx-acts">
+      <a class="big call" href="tel:+${d}">${icon("call")}Call ${esc(fmtPhone(l.phone))}</a>
+      <a class="big wa" href="${waLink(l)}" target="_blank" rel="noopener">${icon("wa")}WhatsApp demo</a>
+      ${l.site ? `<a class="big" href="${esc(l.site)}" target="_blank" rel="noopener">${icon("site")}Their site</a>` : ""}
+      ${l.video ? `<a class="big vid" href="${esc(l.video)}" download>${icon("vid")}Video</a>` : ""}
+      <a class="big" href="${scriptLink(l)}" target="_blank" rel="noopener">Script</a>
+    </div>
+  </div>
+  <div class="nx-r outbox">${outcomeBtns(l.id)}<button class="skip" data-skip="${l.id}">Skip for now</button></div>`;
+}
+function outcome(id, k, days) {
+  const before = JSON.stringify(db.state[id] ?? null), s = peek(id), name = leads().find(l => l.id === id)?.name || "";
+  const early = ["new", "no_answer", "talked", "follow_up"].includes(s.status), keep = ["agreed", "paid"].includes(s.status);
+  let msg;
+  if (k === "no_answer") { touch(id, { called: true, ...(early ? { status: "no_answer" } : {}), follow: plus(1) }, "Called, no answer"); msg = "No answer. Back in the queue tomorrow"; }
+  if (k === "later") { const f = plus(days); touch(id, { called: true, ...(early ? { status: "follow_up" } : {}), follow: f }, `Asked to call back ${fmtDay(f)}`); msg = `Call back ${fmtDay(f)}`; }
+  if (k === "video") { const f = s.follow && s.follow > today() ? s.follow : plus(2); touch(id, { called: true, ...(early ? { status: "follow_up" } : {}), follow: f }, "Sent site + video on WhatsApp"); msg = `Follow up ${fmtDay(f)}`; }
+  if (k === "interested") { touch(id, { called: true, ...(keep ? {} : { status: "interested" }), follow: plus(1) }, "Interested"); msg = "Interested. Call tomorrow to close"; }
+  if (k === "agreed") { touch(id, { called: true, ...(s.status === "paid" ? {} : { status: "agreed" }), follow: "" }, "Agreed"); msg = "Agreed. Now fill in the package"; }
+  if (k === "lost") { touch(id, { called: true, status: "lost", follow: "" }, "Said no"); msg = "Marked as said no. Pick the reason"; }
+  skipped.delete(id);
+  render(); if (k === "agreed" || k === "lost") openDrawer(id);
+  if (k === "agreed") setTimeout(() => { const d = $("#dealSec"); d && d.scrollIntoView({ block: "start", behavior: "smooth" }); }, 60);
+  toast(`${name}: ${msg}`, () => { if (before === "null") delete db.state[id]; else db.state[id] = JSON.parse(before); save(); render(); });
+}
+document.addEventListener("click", e => {
+  const t = e.target.closest("[data-out],[data-later],[data-skip],[data-unskip]");
+  if (!t) return;
+  if (t.dataset.out === "later") { t.closest(".outbox").querySelector(".later").classList.toggle("hide"); return; }
+  if (t.dataset.out) return outcome(t.dataset.id, t.dataset.out);
+  if (t.dataset.later) return outcome(t.dataset.id, "later", +t.dataset.later);
+  if (t.dataset.skip) { skipped.add(t.dataset.skip); return renderNext(); }
+  if (t.hasAttribute("data-unskip")) { skipped.clear(); return renderNext(); }
+});
+const HINT = "locallift-crm:guide-seen";
+const seen = () => { try { return localStorage.getItem(HINT) === "1"; } catch (e) { return false; } };
+if (!seen()) $("#guide").classList.remove("hide");
+$("#gotIt").onclick = () => { $("#guide").classList.add("hide"); try { localStorage.setItem(HINT, "1"); } catch (e) {} };
+$("#showGuide").onclick = () => { $("#guide").classList.remove("hide"); window.scrollTo({ top: 0, behavior: "smooth" }); };
+
 
 render();
 </script>
