@@ -323,7 +323,10 @@ const STATUSES = [
   ["interested", "Interested"], ["agreed", "Agreed"], ["paid", "Paid / live"], ["lost", "Said no"]
 ];
 const SL = Object.fromEntries(STATUSES);
-const CATS = [["all", "All"], ["Plumber", "Plumbers"], ["Gym", "Gyms"], ["Fitness", "Fitness"], ["Restaurant", "Restaurants"], ["Other", "Other"]];
+const CATS = [["all", "All"], ["US", "US"], ["Plumber", "Plumbers"], ["Gym", "Gyms"], ["Fitness", "Fitness"], ["Restaurant", "Restaurants"], ["Other", "Other"]];
+// US leads get their own tab and stay out of the India category tabs
+const isUS = l => /^1\d{10}$/.test(String(l.phone || "").replace(/\D/g, ""));
+const inCat = (l, k) => k === "all" || (k === "US" ? isUS(l) : !isUS(l) && l.cat === k);
 const PKGS = {
   basic: { name: "Basic", price: 5999, feats: ["domain", "hosting", "callwa", "maps"] },
   growth: { name: "Growth", price: 8999, feats: ["domain", "hosting", "callwa", "maps", "gbp", "seo", "changes3"] },
@@ -343,7 +346,7 @@ const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": 
 const today = () => new Date().toLocaleDateString("en-CA");
 const inr = n => "₹" + Number(n || 0).toLocaleString("en-IN");
 const digits = p => String(p || "").replace(/\D/g, "");
-const fmtPhone = p => { const d = digits(p); return d.length === 12 && d.startsWith("91") ? `+91 ${d.slice(2, 7)} ${d.slice(7)}` : p; };
+const fmtPhone = p => { const d = digits(p); if (d.length === 11 && d.startsWith("1")) return `+1 (${d.slice(1, 4)}) ${d.slice(4, 7)}-${d.slice(7)}`; return d.length === 12 && d.startsWith("91") ? `+91 ${d.slice(2, 7)} ${d.slice(7)}` : p; };
 const stamp = () => new Date().toISOString();
 const fmtTime = iso => new Date(iso).toLocaleString("en-IN", { day: "numeric", month: "short", hour: "numeric", minute: "2-digit" });
 
@@ -394,7 +397,7 @@ function filtered() {
   const q = ui.q.trim().toLowerCase(), t = today();
   let L = leads().filter(l => {
     const s = peek(l.id);
-    if (ui.cat !== "all" && l.cat !== ui.cat) return false;
+    if (!inCat(l, ui.cat)) return false;
     if (ui.status && s.status !== ui.status) return false;
     if (ui.quick === "due" && !(s.follow && s.follow <= t && !["paid", "lost"].includes(s.status))) return false;
     if (ui.quick === "open" && ["paid", "lost"].includes(s.status)) return false;
@@ -435,8 +438,8 @@ function renderStats() {
 }
 function renderTabs() {
   const L = leads();
-  $("#tabs").innerHTML = CATS.filter(([k]) => k === "all" || L.some(l => l.cat === k))
-    .map(([k, t]) => `<button class="tab" data-cat="${k}" aria-pressed="${ui.cat === k}">${t}<em>${k === "all" ? L.length : L.filter(l => l.cat === k).length}</em></button>`).join("");
+  $("#tabs").innerHTML = CATS.filter(([k]) => L.some(l => inCat(l, k)))
+    .map(([k, t]) => `<button class="tab" data-cat="${k}" aria-pressed="${ui.cat === k}">${t}<em>${L.filter(l => inCat(l, k)).length}</em></button>`).join("");
   $("#fStatus").innerHTML = `<option value="">All statuses</option>` + STATUSES.map(([v, t]) => `<option value="${v}"${ui.status === v ? " selected" : ""}>${t}</option>`).join("");
 }
 function renderList() {
@@ -658,6 +661,11 @@ function nextStep(s) {
 }
 function waLink(l) {
   const c = l.contact && l.contact !== "ji" ? l.contact : "ji";
+  if (isUS(l)) {
+    const hi = l.contact && l.contact !== "ji" ? `Hi ${l.contact}` : "Hi";
+    const e = `${hi}, this is LocalLift. I made a free demo website for ${l.name} using your photos and Google reviews:\n${l.site || ""}${l.video ? `\n\n30 second video: ${l.video}` : ""}\n\nIf you like it, I can walk you through it on a 10 minute call. If not, no worries at all 🙏`;
+    return `https://wa.me/${digits(l.phone)}?text=${encodeURIComponent(e)}`;
+  }
   const m = `Namaste ${c}, main LocalLift se. ${l.name} ke liye maine ek website ka demo banaya hai, aapki photos aur Google reviews ke saath:\n${l.site || ""}${l.video ? `\n\n30 second ka video: ${l.video}` : ""}\n\nPasand aaye toh bataiye, 10 minute mein sab samjha doonga. Na pasand aaye toh bhi koi baat nahi 🙏`;
   return `https://wa.me/${digits(l.phone)}?text=${encodeURIComponent(m)}`;
 }
@@ -828,7 +836,7 @@ $("#fSync").addEventListener("submit", async e => {
 });
 if (!SUPA.url) $("#sync").classList.add("hide");
 else if (sync.pass) { setSync("busy", "Connecting…"); soon(0); }
-else if (lsGet("locallift-crm:sync-asked") !== "1") { lsSet("locallift-crm:sync-asked", "1"); setTimeout(() => openSync(), 400); }
+else setTimeout(() => openSync(), 400); // keep asking until this laptop is connected, or teammates never see its edits
 setInterval(() => { if (document.visibilityState === "visible") soon(0); }, 8000);
 document.addEventListener("visibilitychange", () => document.visibilityState === "visible" && soon(0));
 addEventListener("online", () => soon(0));
