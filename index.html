@@ -61,6 +61,10 @@ button{cursor:pointer}
 .row.head{background:#fafaf8;color:var(--ink-3);font-size:12px;text-transform:uppercase;letter-spacing:.06em;padding-top:9px;padding-bottom:9px}
 .row.done .nm{color:var(--ink-2)}
 .row:not(.head):hover{background:#fbfbf9}
+/* row colour by status: no = red (bottom), interested / follow-up = yellow box (top), paid = green (bottom) */
+.row.r-hot,.row.r-hot:hover{background:#fff8d6;box-shadow:inset 0 0 0 2px #f2c94c}
+.row.r-paid,.row.r-paid:hover{background:#dcf3e2}
+.row.r-lost,.row.r-lost:hover{background:#fbdcd8}
 .chk{width:20px;height:20px;accent-color:var(--accent);cursor:pointer}
 .nm{font-weight:600;line-height:1.3;cursor:pointer;background:none;border:0;padding:0;text-align:left}
 .nm:hover{text-decoration:underline;text-underline-offset:3px}
@@ -410,8 +414,13 @@ function filtered() {
   if (ui.sort === "updated") L.sort((a, b) => (peek(b.id).updated || "").localeCompare(peek(a.id).updated || ""));
   if (ui.sort === "order") L.sort((a, b) => idx.get(a.id) - idx.get(b.id));
   if (ui.sort === "next") L.sort((a, b) => prio(a, idx) - prio(b, idx));
+  // whatever the sort: interested / follow-up float to the top, paid and said-no sink to the bottom
+  L.sort((a, b) => band(peek(a.id).status) - band(peek(b.id).status));
   return L;
 }
+
+const band = s => s === "interested" || s === "follow_up" ? 0 : s === "paid" ? 2 : s === "lost" ? 3 : 1;
+const rowTone = s => s === "interested" || s === "follow_up" ? " r-hot" : s === "paid" ? " r-paid" : s === "lost" ? " r-lost" : "";
 
 function renderStats() {
   const L = leads(), t = today();
@@ -451,7 +460,7 @@ function renderList() {
     const due = s.follow && s.follow <= t && !["paid", "lost"].includes(s.status);
     const deal = ["agreed", "paid"].includes(s.status) && s.price ? `<span class="deal">${inr(s.price)}</span>` : "";
     const ns = nextStep(s);
-    return `<div class="row${s.called ? " done" : ""}${due ? " isdue" : ""}" role="row">
+    return `<div class="row${s.called ? " done" : ""}${due ? " isdue" : ""}${rowTone(s.status)}" role="row">
       <input type="checkbox" class="chk" data-id="${l.id}" data-act="called" ${s.called ? "checked" : ""} aria-label="Called ${esc(l.name)}" title="Tick when called">
       <div><button class="nm" data-open="${l.id}">${esc(l.name)}</button>
         <div class="meta">${esc(l.cat)} · ${esc(l.area || "Gurugram")}${l.rating ? ` · <span class="star">★</span> ${esc(l.rating)} (${esc(l.reviews)})` : ""}</div></div>
